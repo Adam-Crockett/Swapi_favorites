@@ -1,0 +1,55 @@
+html,
+body {
+  background-color: rgb(45, 106, 146);
+  display: flex;
+  justify-content: center;
+  align-self: stretch;
+}
+.wrapper {
+  display: grid;
+  background-color: rgb(145, 217, 250);
+  grid-template-columns: 1/5fr 1fr 1/5fr;
+  grid-template-rows: 1/5fr, 1fr, 1/5fr;
+  grid-gap: 1em;
+  padding: 1em;
+  align-self: stretch;
+  border: black 1px solid;
+  box-shadow: rgb(51, 66, 50) 2px 2px 3px;
+}
+.chart {
+  display: grid;
+  background-color: rgb(224, 248, 255);
+  grid-template-rows: repeat(52, 1fr);
+  grid-template-columns: repeat(20, 1fr);
+  grid-column-gap: 1%;
+  height: 65vh;
+  width: 50vw;
+  align-items: end;
+  padding: 10px;
+  border-width: 20px;
+  border-radius: 20px;
+  align-self: stretch;
+  border: rgb(0, 0, 0) 1px solid;
+  box-shadow: rgb(51, 66, 50) 2px 2px 3px;
+}
+.bar {
+  border-radius: 1em 1em;
+  background-image: linear-gradient(
+    to right bottom,
+    rgb(145, 255, 255),
+    rgb(255, 234, 220)
+  );
+  width: 1fr;
+  grid-row-start: 50;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: rgb(150, 127, 117) 1px 2px 3px;
+}
+
+.value {
+  font-family: Arial, Helvetica, sans-serif;
+  grid-row-start: 52;
+  color: rgb(20, 13, 11);
+  font-size: 1em;
+  text-align: center;
+}

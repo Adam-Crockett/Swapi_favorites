@@ -1,4 +1,17 @@
-<h1>This is a page Template</h1>
-<ul>
-{{ bar_values }}
-</ul>
+{% load static%}
+<link rel="stylesheet" type="text/css" href="{% static 'barsorting/style.css' %}">
+<div class="wrapper">
+<div style="text-align: center">Top Message</div>
+<div class="chart">
+    {% for value in bar_set %}
+        <div class="bar" data-value={{value}} style="height: {{value}}vh"></div>
+        <div class="value">{{value}}</div>
+    {% endfor %}
+</div>
+<div style="text-align: center">
+<form action=>
+    <button type="button" name="reset">Reset</button>
+    <button type="button" name="bubble-sort">Bubble Sort</button>
+</form>
+</div>
+</div>

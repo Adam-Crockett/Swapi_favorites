@@ -39,6 +39,6 @@ class BarValues(models.Model):
         value_list = []
         count = 0
         while count < 20:
-            value_list.append(random.randint(1, 50))
+            value_list.append(random.randint(5, 50))
             count += 1
         return value_list

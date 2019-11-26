@@ -7,8 +7,8 @@ from .models import BarValues
 
 
 def sorting(request):
-    new_bars = BarValues()
+    bar_set = BarValues()
     context = {
-        'bar_values': new_bars.get_bar_values,
+        'bar_set': bar_set.get_bar_values,
     }
     return render(request, 'barsorting/sorting.html', context)
