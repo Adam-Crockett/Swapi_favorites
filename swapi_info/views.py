@@ -1,10 +1,12 @@
 from django.shortcuts import render
 import swapi
+import requests
+import json
 from .forms import SearchForm
 from django.http import HttpResponseRedirect
 from django.core.cache import caches
 from django.core.cache import cache
-from django.views.decorators.cache import cache_page
+# from django.views.decorators.cache import cache_page
 
 
 def home(request):
@@ -17,7 +19,7 @@ def search(request):
     return render(request, 'swapi_info/search.html', {'form': form})
 
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 def result(request):
 
     if request.method == 'GET':
@@ -28,8 +30,6 @@ def result(request):
             # process the data in form.cleaned_data as required
             context = {}
             search_type = form.cleaned_data['search_type']
-            name = form.cleaned_data['name'].title()
-            search_result = None
             search_collection = []
 
             # num_results = swapi.get_all(search_type).count()
@@ -37,26 +37,23 @@ def result(request):
             if search_type in caches['default']:
                 search_set = caches['default'].get(search_type)
             else:
-                request_search_set = swapi.get_all(search_type)
-                caches['default'].add(search_type, request_search_set)
+                response_set = swapi.get_all(search_type)
+                caches['default'].add(search_type, response_set)
                 search_set = caches['default'].get(search_type)
 
             if search_type == "films":
                 for item in search_set.iter():
-                    if item.title == name:
-                        search_result = item
-                        break
+                    search_collection.append(item)
+                    # if item.title == name:
+                    #     search_result = item
             else:
                 for item in search_set.iter():
                     search_collection.append(item)
-                    if item.name == name:
-                        search_result = item
+                    # if item.name == name:
+                    #     search_result = item
 
             context.update({'search_type': search_type})
-            # context.update({'num_results': num_results})
-            context.update({'search_result': search_result})
             context.update({'search_collection': search_collection})
-            context.update({'name': name})
 
             # redirect to a new URL:
             return render(request, 'swapi_info/result.html', context)

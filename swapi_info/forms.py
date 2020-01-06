@@ -8,4 +8,4 @@ class SearchForm(forms.Form):
                     ('starships', 'Starships'), ('vehicles', 'Vehicles')]
     search_type = forms.CharField(
         label='Search Type', widget=forms.Select(choices=type_choices))
-    name = forms.CharField(label='name', max_length=100)
+    # name = forms.CharField(label='name', max_length=100)

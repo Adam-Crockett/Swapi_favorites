@@ -2,19 +2,21 @@
 
 {% block content %}
 <h2>Search Results</h2>
-    {% if search_result %}
-    <hr>
-    {% for item in search_collection %}
-        <h4>{{ item.name }} piloted by: </h4>
-        {% if item.get_pilots.count > 0 %}
-            {% for pilot in item.get_pilots.iter %}
-              <p>  {{ pilot.name }}</p>
-            {% endfor %}
+    {% if search_type != "films" %}
+      <hr>
+      {% for item in search_collection %}
+        <h4>{{ item.name }}</h4>
+        {% comment %} {% if item.get_pilots.count > 0 %}
+          {% for pilot in item.get_pilots.iter %}
+            <p>  {{ pilot.name }}</p>
+          {% endfor %}
         {% else %}
           <p> No named pilot.</p>
-          {% endif %}
-    {% endfor %}
+        {% endif %} {% endcomment %}
+      {% endfor %}
     {% else %}
-      <p><em>{{ name }} does not exist in swapi</em></p>
+        {% for item in search_collection %}
+        <h4>{{ item.title }}</h4>
+      {% endfor %}
     {% endif %}
 {% endblock %}
