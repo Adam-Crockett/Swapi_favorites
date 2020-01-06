@@ -1,0 +1,11 @@
+{% extends 'swapi_info/base.html' %}
+
+{% block content %}
+<h2>Search Page</h2>
+    <h2>Select a Type of Search</h2>
+    <form action="result" method="GET">
+    {% comment %} {% csrf_token %} {% endcomment %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

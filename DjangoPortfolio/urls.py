@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('barsorting/', include('barsorting.urls')),
+    path('swapi_info/', include('swapi_info.urls')),
     path('admin/', admin.site.urls),
 ]
