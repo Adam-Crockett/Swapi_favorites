@@ -4,6 +4,7 @@ from .forms import SearchForm
 from django.http import HttpResponseRedirect
 from django.core.cache import caches
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 
 
 def home(request):
@@ -16,6 +17,7 @@ def search(request):
     return render(request, 'swapi_info/search.html', {'form': form})
 
 
+@cache_page(60 * 15)
 def result(request):
 
     if request.method == 'GET':
@@ -28,6 +30,7 @@ def result(request):
             search_type = form.cleaned_data['search_type']
             name = form.cleaned_data['name'].title()
             search_result = None
+            search_collection = []
 
             # num_results = swapi.get_all(search_type).count()
 
@@ -38,14 +41,21 @@ def result(request):
                 caches['default'].add(search_type, request_search_set)
                 search_set = caches['default'].get(search_type)
 
-            for item in search_set.iter():
-                if item.name == name:
-                    search_result = item
-                    break
+            if search_type == "films":
+                for item in search_set.iter():
+                    if item.title == name:
+                        search_result = item
+                        break
+            else:
+                for item in search_set.iter():
+                    search_collection.append(item)
+                    if item.name == name:
+                        search_result = item
 
             context.update({'search_type': search_type})
             # context.update({'num_results': num_results})
             context.update({'search_result': search_result})
+            context.update({'search_collection': search_collection})
             context.update({'name': name})
 
             # redirect to a new URL:
