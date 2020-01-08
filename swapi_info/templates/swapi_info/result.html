@@ -5,12 +5,12 @@
     {% if search_type != "films" %}
       <hr>
       {% comment %} {{ search_set }} {% endcomment %}
-      {% for item in search_set %}
+      {% for item in result %}
         <h4>{{ item.name }}</h4>
       {% endfor %}
     {% else %}
     {% comment %} {{ search_set}} {% endcomment %}
-        {% for item in search_set %}
+        {% for item in result %}
         <h4>{{ item.title }}</h4>
       {% endfor %}
     {% endif %}
