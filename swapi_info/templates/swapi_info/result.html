@@ -4,18 +4,13 @@
 <h2>Search Results</h2>
     {% if search_type != "films" %}
       <hr>
-      {% for item in search_collection %}
+      {% comment %} {{ search_set }} {% endcomment %}
+      {% for item in search_set %}
         <h4>{{ item.name }}</h4>
-        {% comment %} {% if item.get_pilots.count > 0 %}
-          {% for pilot in item.get_pilots.iter %}
-            <p>  {{ pilot.name }}</p>
-          {% endfor %}
-        {% else %}
-          <p> No named pilot.</p>
-        {% endif %} {% endcomment %}
       {% endfor %}
     {% else %}
-        {% for item in search_collection %}
+    {% comment %} {{ search_set}} {% endcomment %}
+        {% for item in search_set %}
         <h4>{{ item.title }}</h4>
       {% endfor %}
     {% endif %}

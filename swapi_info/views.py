@@ -6,6 +6,7 @@ from .forms import SearchForm
 from django.http import HttpResponseRedirect
 from django.core.cache import caches
 from django.core.cache import cache
+from django.core import serializers
 # from django.views.decorators.cache import cache_page
 
 
@@ -29,33 +30,30 @@ def result(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             context = {}
+            result = []
             search_type = form.cleaned_data['search_type']
-            search_collection = []
-
-            # num_results = swapi.get_all(search_type).count()
 
             if search_type in caches['default']:
-                search_set = caches['default'].get(search_type)
+                result = caches['default'].get(search_type)
             else:
-                response_set = swapi.get_all(search_type)
-                caches['default'].add(search_type, response_set)
-                search_set = caches['default'].get(search_type)
+                swapi_json_data = requests.get(
+                    'http://swapi.co/api/' + search_type + '/')
+                swapi_data = json.loads(json.dumps(swapi_json_data.json()))
 
-            if search_type == "films":
-                for item in search_set.iter():
-                    search_collection.append(item)
-                    # if item.title == name:
-                    #     search_result = item
-            else:
-                for item in search_set.iter():
-                    search_collection.append(item)
-                    # if item.name == name:
-                    #     search_result = item
+                while swapi_data['next'] != None:
+                    for obj in swapi_data['results']:
+                        result.append(obj)
+                    swapi_json_data = requests.get(swapi_data['next'])
+                    swapi_data = json.loads(json.dumps(swapi_json_data.json()))
+                else:
+                    for obj in swapi_data['results']:
+                        result.append(obj)
+                caches['default'].add(search_type, result)
 
-            context.update({'search_type': search_type})
-            context.update({'search_collection': search_collection})
+            context['search_type'] = search_type
+            context['search_set'] = result
 
-            # redirect to a new URL:
+            # Send to list result page
             return render(request, 'swapi_info/result.html', context)
 
     # if a GET (or any other method) we'll create a blank form
