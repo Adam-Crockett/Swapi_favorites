@@ -1,5 +1,14 @@
 {% extends 'swapi_info/base.html' %}
 
 {% block content %}
+    {% if search_type != 'films' %}
+    <h4>{{ item.name }} has been in:</h4>
+        {% for movie in result %}
+            <p>{{ movie.title }}</p>
+        {% endfor %}
+    {% else %}
+        {% comment %} <p>{{ item.title }} was directed by {{ item.director }}.</p> {% endcomment %}
+        {{ item }}
+    {% endif %}
 
 {% endblock %}

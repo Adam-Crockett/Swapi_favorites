@@ -1,0 +1,17 @@
+{% extends 'swapi_info/base.html' %}
+
+{% block content %}
+<h2>Search Results</h2>
+    {% if search_type != "films" %}
+      <hr>
+      {% for item in item_list %}
+        <a href={% url 'details' search_type item.name %} name={{ item.name }} >{{ item.name }}</a>
+        {% comment %} <h4>{{ item.name }}</h4> {% endcomment %}
+      {% endfor %}
+    {% else %}
+        {% for item in item_list %}
+        <a href={% url 'details' search_type item.title %} name={{ item.title }}>{{ item.title }}</a>
+        {% comment %} <h4>{{ item.title }}</h4> {% endcomment %}
+      {% endfor %}
+    {% endif %}
+{% endblock %}

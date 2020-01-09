@@ -3,7 +3,7 @@
 {% block content %}
 <h2>Search Page</h2>
     <h2>Select a Type of Search</h2>
-    <form action="result" method="GET">
+    <form action="results" method="GET">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">
