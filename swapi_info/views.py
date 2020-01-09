@@ -1,5 +1,4 @@
 from django.shortcuts import render
-import swapi
 import requests
 import json
 from .forms import SearchForm
@@ -85,18 +84,18 @@ class ResultList(ListView):
 class ItemDetails(DetailView):
 
     def get(self, request, search_type, name):
-        context = {'search_type': search_type}
+        context = {'search_type': search_type, 'result_name': name}
         cache_control = CacheController()
-
         item_list = cache_control.get_cache(search_type)
+
         if search_type != 'films':
             for item in item_list:
                 if item['name'] == name:
-                    context[name] = item
+                    context['item'] = item
         else:
             for item in item_list:
                 if item['title'] == name:
-                    context[name] = item
+                    context['item'] = item
 
         return TemplateResponse(request, 'swapi_info/details.html', context, status=200)
 
