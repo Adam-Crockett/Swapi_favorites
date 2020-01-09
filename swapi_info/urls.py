@@ -6,6 +6,6 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('search', views.search, name='search'),
     path('results/', ResultList.as_view(), name='results'),
-    path('details/<str:search_type>/<str:name>',
+    path('details/<str:search_type>/<str:name>/',
          ItemDetails.as_view(), name='details'),
 ]

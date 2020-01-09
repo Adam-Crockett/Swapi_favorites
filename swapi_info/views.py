@@ -36,6 +36,8 @@ class CacheController():
         else:
             for item in swapi_data['results']:
                 data_set['item_list'].append(item)
+        if search_type == 'vehicles':
+            data_set['item_list'] = self.handle_bad_name(data_set['item_list'])
 
         caches['default'].add(search_type, data_set['item_list'])
 
@@ -45,6 +47,12 @@ class CacheController():
         else:
             self.set_cache(search_type)
             return caches['default'].get(search_type)
+
+    def handle_bad_name(self, item_list):
+        for item in item_list:
+            if '/' in item['name']:
+                item['name'] = item['name'].replace('/', '-')
+        return item_list
 
 
 class ResultList(ListView):
@@ -87,17 +95,51 @@ class ItemDetails(DetailView):
         context = {'search_type': search_type, 'result_name': name}
         cache_control = CacheController()
         item_list = cache_control.get_cache(search_type)
+        type_handler = {
+            'item': self.item_handler,
+            'films': self.film_handler,
+            'people': self.people_handler,
+            'species_handler': self.species_handler,
+            'planets': self.planet_handler,
+            'starships': self.starship_handler,
+            'vehicles': self.vehicle_handler}
 
+        item = type_handler['item'](item_list, search_type, name)
+
+        context['item'] = item
+
+        # type_handler[search_type](item)
+
+        return TemplateResponse(request, 'swapi_info/details.html', context, status=200)
+
+    def item_handler(self, item_list, search_type, name):
         if search_type != 'films':
             for item in item_list:
                 if item['name'] == name:
-                    context['item'] = item
+                    return item
         else:
             for item in item_list:
                 if item['title'] == name:
-                    context['item'] = item
+                    return item
+        return HttpResponse(status=406)
 
-        return TemplateResponse(request, 'swapi_info/details.html', context, status=200)
+    def film_handler(self, film):
+        pass
+
+    def people_handler(self, person):
+        pass
+
+    def species_handler(self, species):
+        pass
+
+    def planet_handler(self, planet):
+        pass
+
+    def starship_handler(self, starship):
+        pass
+
+    def vehicle_handler(self, vehicle):
+        pass
 
         # def get_queryset(self, request):
         #     if request.method == 'GET':
