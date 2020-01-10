@@ -122,13 +122,72 @@ class DetailGathering():
         return context
 
     def species_handler(self, species):
-        pass
+        homeworld = []
+        people = []
+        films = []
+
+        for planet in self.cache_control.get_cache('planets'):
+            if planet['url'] in species['homeworld']:
+                homeworld.append(planet['name'])
+
+        for person in self.cache_control.get_cache('people'):
+            if person['url'] in species['people']:
+                people.append(person['name'])
+
+        for film in self.cache_control.get_cache('films'):
+            if film['url'] in species['films']:
+                films.append(film['title'])
+
+        context = {'item': species, 'homeworld': homeworld,
+                   'people': people, 'films': film}
+
+        return context
 
     def planet_handler(self, planet):
-        pass
+        residents = []
+        films = []
+
+        for person in self.cache_control.get_cache('people'):
+            if person['url'] in planet['residents']:
+                residents.append(person['name'])
+
+        for film in self.cache_control.get_cache('films'):
+            if film['url'] in planet['films']:
+                films.append(film['title'])
+
+        context = {'item': planet,
+                   'residents': residents, 'films': film}
+
+        return context
 
     def starship_handler(self, starship):
-        pass
+        pilots = []
+        films = []
+
+        for person in self.cache_control.get_cache('people'):
+            if person['url'] in starship['pilots']:
+                pilots.append(person['name'])
+
+        for film in self.cache_control.get_cache('films'):
+            if film['url'] in starship['films']:
+                films.append(film['title'])
+
+        context = {'item': starship, 'pilots': pilots, 'films': film}
+
+        return context
 
     def vehicle_handler(self, vehicle):
-        pass
+        pilots = []
+        films = []
+
+        for person in self.cache_control.get_cache('people'):
+            if person['url'] in vehicle['pilots']:
+                pilots.append(person['name'])
+
+        for film in self.cache_control.get_cache('films'):
+            if film['url'] in vehicle['films']:
+                films.append(film['title'])
+
+        context = {'item': vehicle, 'pilots': pilots, 'films': film}
+
+        return context
