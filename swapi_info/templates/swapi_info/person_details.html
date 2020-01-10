@@ -1,0 +1,17 @@
+{% extends 'swapi_info/base.html' %}
+
+{% block content %}
+    <p>{{ item.name }}</p>
+    <p>{{ item.hair_color }}</p>
+    <p>{{ item.birth_year }}</p>
+    <p>{{ homeworld }}</p>
+    <p>{{ films }}</p>
+    <p>{{ starships }}</p>
+    <p>{{ planets }}</p>
+    <p>{{ species }}</p>
+    <p>{{ vehicles }}</p>
+
+
+
+    <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
+{% endblock %}

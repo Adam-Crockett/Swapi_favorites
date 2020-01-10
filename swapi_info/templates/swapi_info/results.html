@@ -6,12 +6,10 @@
       <hr>
       {% for item in item_list %}
         <li><a href={% url 'details' search_type item.name %} name={{ item.name }} >{{ item.name }}</a></li>
-        {% comment %} <h4>{{ item.name }}</h4> {% endcomment %}
       {% endfor %}
     {% else %}
         {% for item in item_list %}
         <li><a href={% url 'details' search_type item.title %} name={{ item.title }}>{{ item.title }}</a></li>
-        {% comment %} <h4>{{ item.title }}</h4> {% endcomment %}
       {% endfor %}
     {% endif %}
 {% endblock %}

@@ -1,15 +1,20 @@
 {% extends 'swapi_info/base.html' %}
 
 {% block content %}
-    {% if search_type != 'films' %}
-    <h4>{{ item.name }} has been in:</h4>
-        <p>Place Holder for movie list</p>
-        {% comment %} {% for movie in result %}
-            <p>{{ movie.title }}</p>
-        {% endfor %} {% endcomment %}
-    {% else %}
-        <p>{{ item.title }} was directed by {{ item.director }}.</p>
-    {% endif %}
-    <a href={{ request.META.HTTP_REFERER }} name='back'>Back to Results</a>
+    <p>{{ item.title }}</p>
+    <p>{{ item.opening_crawl }}</p>
+    {% for person in characters %}
+        <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
+      {% endfor %}
+    {% comment %} <p>{{ characters }}</p> {% endcomment %}
+    <p>{{ producer }}</p>
+    <p>{{ item.director }}</p>
+    <p>{{ starships }}</p>
+    <p>{{ planets }}</p>
+    <p>{{ species }}</p>
+    <p>{{ vehicles }}</p>
 
+
+
+    <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
 {% endblock %}

@@ -3,10 +3,10 @@
 {% block content %}
     {% if search_type != 'films' %}
     <h4>{{ item.name }} has been in:</h4>
-        <p>Place Holder for movie list</p>
-        {% comment %} {% for movie in result %}
+        {% comment %} <p>Place Holder for movie list</p> {% endcomment %}
+        {% for movie in item.films %}
             <p>{{ movie.title }}</p>
-        {% endfor %} {% endcomment %}
+        {% endfor %}
     {% else %}
         <p>{{ item.title }} was directed by {{ item.director }}.</p>
     {% endif %}
