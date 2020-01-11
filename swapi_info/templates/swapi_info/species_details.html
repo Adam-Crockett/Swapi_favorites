@@ -1,0 +1,21 @@
+{% extends 'swapi_info/base.html' %}
+
+{% block content %}
+    <p>{{ item.name }}</p>
+    <p>{{ item.classification }}</p>
+    <p>{{ item.designation }}</p>
+    <p>Homeworld</p>
+    {% for planet in homeworld %}
+        {% if planet != 'No Homeworld'%}
+            <li><a href={% url 'details' 'planets' planet %} name={{ planet }} >{{ planet }}</a></li>
+        {% else %}
+            {{ planet }}
+        {% endif %}
+    {% endfor %}
+    <p>People</p>
+    {% for person in people %}
+        <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
+    {% endfor %}
+
+    <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
+{% endblock %}

@@ -69,9 +69,9 @@ class DetailGathering():
             if person['url'] in film['characters']:
                 characters.append(person['name'])
 
-        for specie in self.cache_control.get_cache('species'):
-            if specie['url'] in film['species']:
-                species.append(specie['name'])
+        for species_name in self.cache_control.get_cache('species'):
+            if species_name['url'] in film['species']:
+                species.append(species_name['name'])
 
         for planet in self.cache_control.get_cache('planets'):
             if planet['url'] in film['planets']:
@@ -104,9 +104,9 @@ class DetailGathering():
             if film['url'] in person['films']:
                 films.append(film['title'])
 
-        for specie in self.cache_control.get_cache('species'):
-            if specie['url'] in person['species']:
-                species.append(specie['name'])
+        for species_name in self.cache_control.get_cache('species'):
+            if species_name['url'] in person['species']:
+                species.append(species_name['name'])
 
         for starship in self.cache_control.get_cache('starships'):
             if starship['url'] in person['starships']:
@@ -126,9 +126,14 @@ class DetailGathering():
         people = []
         films = []
 
+        # Add None error handeling
         for planet in self.cache_control.get_cache('planets'):
-            if planet['url'] in species['homeworld']:
-                homeworld.append(planet['name'])
+            try:
+                if planet['url'] in species['homeworld']:
+                    homeworld.append(planet['name'])
+            except TypeError as e:
+                homeworld.append('No Homeworld')
+                break
 
         for person in self.cache_control.get_cache('people'):
             if person['url'] in species['people']:
@@ -139,7 +144,7 @@ class DetailGathering():
                 films.append(film['title'])
 
         context = {'item': species, 'homeworld': homeworld,
-                   'people': people, 'films': film}
+                   'people': people, 'films': films}
 
         return context
 
@@ -156,7 +161,7 @@ class DetailGathering():
                 films.append(film['title'])
 
         context = {'item': planet,
-                   'residents': residents, 'films': film}
+                   'residents': residents, 'films': films}
 
         return context
 
@@ -172,7 +177,7 @@ class DetailGathering():
             if film['url'] in starship['films']:
                 films.append(film['title'])
 
-        context = {'item': starship, 'pilots': pilots, 'films': film}
+        context = {'item': starship, 'pilots': pilots, 'films': films}
 
         return context
 
@@ -188,6 +193,6 @@ class DetailGathering():
             if film['url'] in vehicle['films']:
                 films.append(film['title'])
 
-        context = {'item': vehicle, 'pilots': pilots, 'films': film}
+        context = {'item': vehicle, 'pilots': pilots, 'films': films}
 
         return context

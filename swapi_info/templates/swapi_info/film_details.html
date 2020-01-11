@@ -3,18 +3,28 @@
 {% block content %}
     <p>{{ item.title }}</p>
     <p>{{ item.opening_crawl }}</p>
+    <p>Characters</p>
     {% for person in characters %}
         <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
       {% endfor %}
-    {% comment %} <p>{{ characters }}</p> {% endcomment %}
     <p>{{ producer }}</p>
     <p>{{ item.director }}</p>
-    <p>{{ starships }}</p>
-    <p>{{ planets }}</p>
-    <p>{{ species }}</p>
-    <p>{{ vehicles }}</p>
-
-
+    <p>Starships</p>
+    {% for starship in starships %}
+        <li><a href={% url 'details' 'starships' starship %} name={{ starship }} >{{ starship }}</a></li>
+      {% endfor %}
+    <p>Planets</p>
+    {% for planet in planets %}
+        <li><a href={% url 'details' 'planets' planet %} name={{ planet }} >{{ planet }}</a></li>
+      {% endfor %}
+    <p>Species</p>
+    {% for species_name in species %}
+        <li><a href={% url 'details' 'species' species_name %} name={{ species_name }} >{{ species_name }}</a></li>
+      {% endfor %}
+    <p>Vehicles</p>
+    {% for vehicle in vehicles %}
+        <li><a href={% url 'details' 'vehicles' vehicle %} name={{ vehicle }} >{{ vehicle }}</a></li>
+      {% endfor %}
 
     <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
 {% endblock %}

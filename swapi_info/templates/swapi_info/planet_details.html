@@ -1,0 +1,17 @@
+{% extends 'swapi_info/base.html' %}
+
+{% block content %}
+    <p>{{ item.name }}</p>
+    <p>{{ item.diameter }}</p>
+    <p>{{ item.population }}</p>
+    <p>Residents</p>
+    {% for person in residents %}
+        <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
+      {% endfor %}
+    <p>Films</p>
+    {% for film in films %}
+        <li><a href={% url 'details' 'films' film %} name={{ film }} >{{ film }}</a></li>
+    {% endfor %}
+
+    <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
+{% endblock %}
