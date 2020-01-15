@@ -4,7 +4,8 @@
 <h2>Search Page</h2>
     <h2>Select a Type of Search</h2>
     <form action="results" method="GET">
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit">
+    </form>
 {% endblock %}

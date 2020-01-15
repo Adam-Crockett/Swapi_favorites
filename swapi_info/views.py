@@ -6,16 +6,42 @@ from django.core import serializers
 from django.views.generic import ListView, DetailView
 from django.template.response import TemplateResponse
 from swapi_info.handlers import CacheController, DetailGathering
-
-
-def home(request):
-    return render(request, "swapi_info/home.html")
+from swapi_info.models import Favorites
 
 
 def search(request):
     form = SearchForm()
 
     return render(request, 'swapi_info/search.html', {'form': form})
+
+
+class HomePage(ListView):
+    template_name = 'swapi_info/home.html'
+    context_object_name = 'top_five'
+    model = Favorites
+
+    def get_queryset(self):
+
+        item_types = ['films', 'people', 'species',
+                      'planets', 'starships', 'vehicles']
+
+        top_five = {
+            'films': [],
+            'people': [],
+            'species': [],
+            'planets': [],
+            'starships': [],
+            'vehicles': []
+        }
+
+        for kind in item_types:
+            top_five_qs = Favorites.objects.filter(
+                item_type=kind).order_by('-favorite_count')[:5]
+            for item in top_five_qs:
+                top_five[kind].append(
+                    [item.name, item.favorite_count])
+
+        return top_five
 
 
 class ResultList(ListView):
@@ -25,7 +51,8 @@ class ResultList(ListView):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             search_type = form.cleaned_data['search_type']
-            context = {'search_type': search_type, 'item_list': []}
+            context = {'search_type': search_type,
+                       'item_list': [], 'form': form}
             cache_control = CacheController()
             context['item_list'] = cache_control.get_cache(search_type)
 
@@ -52,6 +79,25 @@ class ItemDetails(DetailView):
             item_list, search_type, name)
         context['item'] = item
 
-        context = type_handler[search_type][0](item)
+        context['item_content'] = type_handler[search_type][0](item)
 
         return TemplateResponse(request, type_handler[search_type][1], context, status=200)
+
+
+def add_favorite(request, *args, **kwargs):
+    if request.method == 'POST':
+        item_name = request.POST['item_name']
+        item_type = request.POST['item_type']
+        swapi_url = request.POST['item_url']
+
+        obj, created = Favorites.objects.get_or_create(
+            name=item_name, item_type=item_type, swapi_url=swapi_url, defaults={'favorite_count': 1})
+
+        if not created:
+            obj.favorite_count += 1
+            obj.save()
+
+        return TemplateResponse(request, 'swapi_info/favorite_added.html', status=201)
+
+    else:
+        return HttpResponse(status=404)

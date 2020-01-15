@@ -1,11 +1,11 @@
 {% extends 'swapi_info/base.html' %}
 
-{% block content %}
+{% block content %}  
     <p>{{ item.name }}</p>
     <p>{{ item.hair_color }}</p>
     <p>{{ item.birth_year }}</p>
     <p>Homeworld</p>
-    {% for planet in homeworld %}
+    {% for planet in item_content.homeworld %}
         {% if planet != 'No Homeworld'%}
             <li><a href={% url 'details' 'planets' planet %} name={{ planet }} >{{ planet }}</a></li>
         {% else %}
@@ -13,23 +13,31 @@
         {% endif %}
     {% endfor %}
     <p>Films</p>
-    {% for film in films %}
+    {% for film in item_content.films %}
         <li><a href={% url 'details' 'films' film %} name={{ film }} >{{ film }}</a></li>
     {% endfor %}
     <p>Starships</p>
-    {% for starship in starships %}
+    {% for starship in item_content.starships %}
         <li><a href={% url 'details' 'starships' starship %} name={{ starship }} >{{ starship }}</a></li>
     {% endfor %}
     <p>Species</p>
-    {% for species_name in species %}
+    {% for species_name in item_content.species %}
         <li><a href={% url 'details' 'species' species_name %} name={{ species_name }} >{{ species_name }}</a></li>
     {% endfor %}
     <p>Vehicles</p>
-    {% for vehicle in vehicles %}
+    {% for vehicle in item_content.vehicles %}
         <li><a href={% url 'details' 'vehicles' vehicle %} name={{ vehicle }} >{{ vehicle }}</a></li>
     {% endfor %}
 
+    <br>
+    <p>Favorite {{ item.name }}</p>
+    <form action="favorite" method="POST">
+        {% csrf_token %}
+        <input type='hidden' name='item_name' value="{{ item.name }}">
+        <input type='hidden' name='item_type' value={{ search_type }}>
+        <input type='hidden' name='item_url' value={{ item.url }}>
+        <input type="submit" value="Favorite">
+    </form>
 
 
-    <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
 {% endblock %}

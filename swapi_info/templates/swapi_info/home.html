@@ -3,5 +3,20 @@
 {% block content %}
 <h2>Fan Favorites</h2>
     <h2>Movies | People | Planets | Species | Starships | Vehicles</h2>
-    <p>Here is the top five fan favorites in each catagory.</p>
+    {% comment %} <p>Top 5 Movies: {{ top_five.films }}</p> {% endcomment %}
+    <p>Movies:</p>
+    {% for films_data in top_five.films %}
+        <p>Name: {{ films_data }}</p>
+        <p>Number of Favorites: {{ films_data }}</p>
+    {% endfor %}
+    <p>Top 5 People: {{ top_five.people }}</p>
+    <p>People:</p>
+    {% for people_data in top_five.people %}
+        <p>Name: {{ people_data.0 }}</p>
+        <p>Number of Favorites: {{ people_data.1 }}</p>
+    {% endfor %}
+    <p>Top 5 Planets: {{ top_five.planets }}</p>
+    <p>Top 5 Species: {{ top_five.species }}</p>
+    <p>Top 5 Starships: {{ top_five.starships }}</p>
+    <p>Top 5 Vehicles: {{ top_five.vehicles }}</p>
 {% endblock %}

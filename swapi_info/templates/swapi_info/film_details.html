@@ -4,27 +4,35 @@
     <p>{{ item.title }}</p>
     <p>{{ item.opening_crawl }}</p>
     <p>Characters</p>
-    {% for person in characters %}
+    {% for person in item_content.characters %}
         <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
       {% endfor %}
-    <p>{{ producer }}</p>
+    <p>{{ item_content.producer }}</p>
     <p>{{ item.director }}</p>
     <p>Starships</p>
-    {% for starship in starships %}
+    {% for starship in item_content.starships %}
         <li><a href={% url 'details' 'starships' starship %} name={{ starship }} >{{ starship }}</a></li>
       {% endfor %}
     <p>Planets</p>
-    {% for planet in planets %}
+    {% for planet in item_content.planets %}
         <li><a href={% url 'details' 'planets' planet %} name={{ planet }} >{{ planet }}</a></li>
       {% endfor %}
     <p>Species</p>
-    {% for species_name in species %}
+    {% for species_name in item_content.species %}
         <li><a href={% url 'details' 'species' species_name %} name={{ species_name }} >{{ species_name }}</a></li>
       {% endfor %}
     <p>Vehicles</p>
-    {% for vehicle in vehicles %}
+    {% for vehicle in item_content.vehicles %}
         <li><a href={% url 'details' 'vehicles' vehicle %} name={{ vehicle }} >{{ vehicle }}</a></li>
       {% endfor %}
 
-    <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
+    <p>Favorite {{ item.title }}</p>
+    <form action="favorite" method="POST">
+        {% csrf_token %}
+        <input type='hidden' name='item_name' value="{{ item.title }}">
+        <input type='hidden' name='item_type' value={{ search_type }}>
+        <input type='hidden' name='item_url' value={{ item.url }}>
+        <input type="submit" value="Favorite">
+    </form>
+
 {% endblock %}

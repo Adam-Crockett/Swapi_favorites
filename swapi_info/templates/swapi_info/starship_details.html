@@ -6,13 +6,21 @@
     <p>{{ item.model }}</p>
     <p>{{ item.manufacturer }}</p>
     <p>Pilots</p>
-    {% for person in pilots %}
+    {% for person in item_content.pilots %}
         <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
       {% endfor %}
     <p>Films</p>
-    {% for film in films %}
+    {% for film in item_content.films %}
         <li><a href={% url 'details' 'films' film %} name={{ film }} >{{ film }}</a></li>
     {% endfor %}
 
-    <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
+    <p>Favorite {{ item.name }}</p>
+    <form action="favorite" method="POST">
+        {% csrf_token %}
+        <input type='hidden' name='item_name' value="{{ item.name }}">
+        <input type='hidden' name='item_type' value={{ search_type }}>
+        <input type='hidden' name='item_url' value={{ item.url }}>
+        <input type="submit" value="Favorite">
+    </form>
+    
 {% endblock %}

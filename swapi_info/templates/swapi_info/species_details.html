@@ -5,7 +5,7 @@
     <p>{{ item.classification }}</p>
     <p>{{ item.designation }}</p>
     <p>Homeworld</p>
-    {% for planet in homeworld %}
+    {% for planet in item_content.homeworld %}
         {% if planet != 'No Homeworld'%}
             <li><a href={% url 'details' 'planets' planet %} name={{ planet }} >{{ planet }}</a></li>
         {% else %}
@@ -13,9 +13,17 @@
         {% endif %}
     {% endfor %}
     <p>People</p>
-    {% for person in people %}
+    {% for person in item_content.people %}
         <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
     {% endfor %}
 
-    <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
+    <p>Favorite {{ item.name }}</p>
+    <form action="favorite" method="POST">
+        {% csrf_token %}
+        <input type='hidden' name='item_name' value="{{ item.name }}">
+        <input type='hidden' name='item_type' value={{ search_type }}>
+        <input type='hidden' name='item_url' value={{ item.url }}>
+        <input type="submit" value="Favorite">
+    </form>
+    
 {% endblock %}

@@ -9,3 +9,8 @@ class SearchForm(forms.Form):
     search_type = forms.CharField(
         label='Search Type', widget=forms.Select(choices=type_choices))
     # name = forms.CharField(label='name', max_length=100)
+
+
+# class FavoriteSelect(forms.Form):
+#     item_type = forms.HiddenInput()
+#     item_name = forms.HiddenInput()
