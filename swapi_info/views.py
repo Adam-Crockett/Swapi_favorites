@@ -165,7 +165,7 @@ def add_favorite(request, *args, **kwargs):
         else:
             request.session[item_type] = item_type
             # Expireration of session to allow favorite selection again.
-            request.session[item_type].set_expiry(60)
+            request.session.set_expiry(60)
 
         # Request the object from database, if not in database a new entry is created.
         obj, created = Favorites.objects.get_or_create(

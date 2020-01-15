@@ -1,28 +1,51 @@
-<!doctype html>
-<html lang="en us">
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    {% load static %}
+    <link type="text/css" rel="stylesheet" href="{% static "swapi_info/css/materialize.css" %}"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
     <title>Star Wars Favorites</title>
-    <style type="text/css">
-      body {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-    </style>
-    </head>
   <body>
-    <header>
-      <h1 style="margin-bottom: 0">Star Wars Favorites</h1>
-      <a href="{% url 'home' %}">Home</a> /
-      <a href="{% url 'search' %}">Search</a>
-    </header>
-    <hr>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Star Wars Favorites</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'search' %}">Search</a></li>
+      </ul>
+    </div>
+  </nav>
     {% block content %}
     {% endblock %}
-    <hr>
-    <footer>
-      <a href="https://www.linkedin.com/in/adam-crockett/">Linkedin</a> /
-      <a href="https://github.com/Adam-Crockett">Github Repository</a>
-    </footer>
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          {% comment %} <h5 class="white-text"></h5>
+          <p class="grey-text text-lighten-4"></p> {% endcomment %}
+        </div>
+        <div class="col l0 offset-l0 s12">
+          <h5 class="white-text">Links</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/adam-crockett/">Linkedin</a></li>
+            <li><a class="grey-text text-lighten-3" href="https://github.com/Adam-Crockett">Github Repository</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      © 2020 Copyright
+      </div>
+    </div>
+  </footer>
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src={% static "swapi_info/js/materialize.js" %}></script>
   </body>
 </html>
