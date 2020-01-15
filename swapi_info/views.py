@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import SearchForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.core.cache import caches
 from django.core import serializers
 from django.views.generic import ListView, DetailView
@@ -89,6 +89,12 @@ def add_favorite(request, *args, **kwargs):
         item_name = request.POST['item_name']
         item_type = request.POST['item_type']
         swapi_url = request.POST['item_url']
+
+        if item_type in request.session:
+            return TemplateResponse(request, 'swapi_info/favorite_not_added.html', status=403)
+        else:
+            request.session[item_type] = item_type
+            request.session.set_expiry(60)
 
         obj, created = Favorites.objects.get_or_create(
             name=item_name, item_type=item_type, swapi_url=swapi_url, defaults={'favorite_count': 1})

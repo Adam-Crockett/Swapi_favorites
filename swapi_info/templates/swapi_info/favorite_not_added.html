@@ -1,7 +1,8 @@
 {% extends 'swapi_info/base.html' %}
 
 {% block content %}
-<h2>Your favorite has been added to the database!</h2>
+<h2>You can't favorite this catagory for awhile.</h2>
+<p>Explore some of the other catagories for awhile.</p>
 
 <a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
 {% endblock %}
