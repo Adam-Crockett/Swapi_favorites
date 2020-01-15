@@ -5,6 +5,10 @@ from django.db import models
 
 
 class Favorites(models.Model):
+    """
+    Favorites selected by users in each catagory and the number of favorites
+    for each object.
+    """
     objects = models.Manager()
     ITEM_TYPES = (
         ('films', 'Films'),

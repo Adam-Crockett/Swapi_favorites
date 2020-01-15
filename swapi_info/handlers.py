@@ -5,8 +5,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 
 class CacheController():
+    """Controls the caching of information from the SWAPI API."""
 
     def set_cache(self, search_type):
+        """
+        Converts from json data retrieved from SWAPI into Python objects and stores in cache.
+
+        :param search_type: The type of api search to request from SWAPI.
+        """
         data_set = {'item_list': []}
         swapi_json_data = requests.get(
             'http://swapi.co/api/' + search_type + '/')
@@ -23,29 +29,65 @@ class CacheController():
             for item in swapi_data['results']:
                 data_set['item_list'].append(item)
 
-        if search_type == 'vehicles':
-            data_set['item_list'] = self.handle_bad_name(data_set['item_list'])
+        # if search_type == 'vehicles':
+        data_set['item_list'] = self.handle_bad_name(
+            search_type, data_set['item_list'])
 
         caches['default'].add(search_type, data_set['item_list'])
 
     def get_cache(self, search_type):
+        """
+        Retrive the specified cache for the view. If the search type is no
+        longer cached than a call is made to set_cache method to update cache.
+
+        :param search_type: The requested search type.
+        :return: The cached list of objects based on serach type.
+        """
         if search_type in caches['default']:
             return caches['default'].get(search_type)
         else:
             self.set_cache(search_type)
             return caches['default'].get(search_type)
 
-    def handle_bad_name(self, item_list):
-        for item in item_list:
-            if '/' in item['name']:
-                item['name'] = item['name'].replace('/', '-')
-        return item_list
+    def handle_bad_name(self, search_type, item_list):
+        """
+        If an item's name has a '/' in it, the character is changed to '-'
+        before caching the list.
+
+        :param search_type: The search type of item_list.
+        :param item_list: The list of items to check for forward slash characters.
+        """
+        if search_type == 'films':
+            for item in item_list:
+                if '/' in item['title']:
+                    item['title'] = item['title'].replace('/', '-')
+            return item_list
+        else:
+            for item in item_list:
+                if '/' in item['name']:
+                    item['name'] = item['name'].replace('/', '-')
+            return item_list
 
 
 class DetailGathering():
+    """
+    Gather the required information for each serach type. Some information has been
+    stored as url links from the SWAPI API, this class creates item lists based on
+    the search type for those item urls for template display.
+    """
     cache_control = CacheController()
 
     def item_handler(self, item_list, search_type, name):
+        """
+        Gets the desired object based on name. SWAPI API uses different key values for
+        names depending on the type of item.
+
+        :param item_list: The list of objects.
+        :param search_type: The type of object.
+        :param name: The desired object name.
+        :return item: The desired object.
+        :return 406: Return a 406 if the object does not exist in cache list.
+        """
         if search_type != 'films':
             for item in item_list:
                 if item['name'] == name:
@@ -57,6 +99,13 @@ class DetailGathering():
         return HttpResponse(status=406)
 
     def film_handler(self, film):
+        """
+        Gathers the information for film objects. Producer could be a list and
+        multiple catagories are url links that need to be found in cache.
+
+        :param film: The film object to retrieve urls from.
+        :return context: A dict of the catagories and names.
+        """
         characters = []
         species = []
         planets = []
@@ -90,6 +139,13 @@ class DetailGathering():
         return context
 
     def people_handler(self, person):
+        """
+        Gathers the information for people objects. Multiple catagories 
+        are url links that need to be found in cache.
+
+        :param person: The person object to retrieve urls from.
+        :return context: A dict of the catagories and names.
+        """
         homeworld = []
         films = []
         species = []
@@ -122,6 +178,13 @@ class DetailGathering():
         return context
 
     def species_handler(self, species):
+        """
+        Gathers the information for species objects. Multiple catagories 
+        are url links that need to be found in cache.
+
+        :param species: The species object to retrieve urls from.
+        :return context: A dict of the catagories and names.
+        """
         homeworld = []
         people = []
         films = []
@@ -149,6 +212,13 @@ class DetailGathering():
         return context
 
     def planet_handler(self, planet):
+        """
+        Gathers the information for planet objects. Multiple catagories 
+        are url links that need to be found in cache.
+
+        :param planet: The planet object to retrieve urls from.
+        :return context: A dict of the catagories and names.
+        """
         residents = []
         films = []
 
@@ -166,6 +236,13 @@ class DetailGathering():
         return context
 
     def starship_handler(self, starship):
+        """
+        Gathers the information for starship objects. Multiple catagories 
+        are url links that need to be found in cache.
+
+        :param starship: The starship object to retrieve urls from.
+        :return context: A dict of the catagories and names.
+        """
         pilots = []
         films = []
 
@@ -182,6 +259,13 @@ class DetailGathering():
         return context
 
     def vehicle_handler(self, vehicle):
+        """
+        Gathers the information for vehicle objects. Multiple catagories 
+        are url links that need to be found in cache.
+
+        :param vehicle: The vehicle object to retrieve urls from.
+        :return context: A dict of the catagories and names.
+        """
         pilots = []
         films = []
 

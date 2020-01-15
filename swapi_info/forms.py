@@ -4,13 +4,10 @@ import requests
 
 
 class SearchForm(forms.Form):
+    """
+    Search form used on the search page of site. Lets the user select the type of Search to run.
+    """
     type_choices = [('films', 'Films'), ('people', 'People'), ('species', 'Species'), ('planets', 'Planets'),
                     ('starships', 'Starships'), ('vehicles', 'Vehicles')]
     search_type = forms.CharField(
         label='Search Type', widget=forms.Select(choices=type_choices))
-    # name = forms.CharField(label='name', max_length=100)
-
-
-# class FavoriteSelect(forms.Form):
-#     item_type = forms.HiddenInput()
-#     item_name = forms.HiddenInput()
