@@ -16,9 +16,10 @@ def search(request):
     **Template:**
     :template: 'swapi_info/search.html'
     """
-    form = SearchForm()
+    # form = SearchForm()
 
-    return render(request, 'swapi_info/search.html', {'form': form})
+    # return render(request, 'swapi_info/search.html', {'form': form})
+    return render(request, 'swapi_info/search.html')
 
 
 class HomePage(ListView):
@@ -83,16 +84,23 @@ class ResultList(ListView):
 
         :return: Templated response.
         """
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            search_type = form.cleaned_data['search_type']
-            context = {'search_type': search_type,
-                       'item_list': [], 'form': form}
-            cache_control = CacheController()
-            context['item_list'] = cache_control.get_cache(search_type)
+        # form = SearchForm(request.GET)
+        search_type = request.GET['search_type']
+        context = {'search_type': search_type,
+                   'item_list': []}
+        cache_control = CacheController()
+        context['item_list'] = cache_control.get_cache(search_type)
 
-            return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
+        return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
+        # if form.is_valid():
+        #     # process the data in form.cleaned_data as required
+        #     search_type = form.cleaned_data['search_type']
+        #     context = {'search_type': search_type,
+        #                'item_list': [], 'form': form}
+        #     cache_control = CacheController()
+        #     context['item_list'] = cache_control.get_cache(search_type)
+
+        #     return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
 
 
 class ItemDetails(DetailView):
