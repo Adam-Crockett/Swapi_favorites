@@ -2,13 +2,36 @@
 
 {% block content %}
 <h2>Fan Favorites</h2>
-    <h2>Movies | People | Planets | Species | Starships | Vehicles</h2>
+    {% comment %} <h2>Movies | People | Planets | Species | Starships | Vehicles</h2> {% endcomment %}
     {% comment %} <p>Top 5 Movies: {{ top_five.films }}</p> {% endcomment %}
+    <div class="row">
+    <div class="col s2"
     <p>Movies:</p>
+    </div>
+    <div class="col s10">
+        <table>
+            <thread>
+                <tr>
+                    <th>Name</th>
+                    <th>Favorite Count</th>
+                </tr>
+            </thread>
+            <tbody>
+                {% for films_data in top_five.films %}
+                    <tr>
+                    <td>{{ films_data.0 }}</td>
+                    <td>{{ films_data.1 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+    {% comment %} <p>Movies:</p>
     {% for films_data in top_five.films %}
         <p>Name: {{ films_data }}</p>
         <p>Number of Favorites: {{ films_data }}</p>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
     <p>Top 5 People: {{ top_five.people }}</p>
     <p>People:</p>
     {% for people_data in top_five.people %}

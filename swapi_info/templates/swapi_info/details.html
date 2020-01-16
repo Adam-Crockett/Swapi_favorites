@@ -1,6 +1,7 @@
 {% extends 'swapi_info/base.html' %}
 
 {% block content %}
+<div class="container">
     {% if search_type != 'films' %}
     <h4>{{ item.name }} has been in:</h4>
         {% comment %} <p>Place Holder for movie list</p> {% endcomment %}
@@ -11,5 +12,5 @@
         <p>{{ item.title }} was directed by {{ item.director }}.</p>
     {% endif %}
     <a href={{ request.META.HTTP_REFERER }} name='back'>Back to Results</a>
-
+</div>
 {% endblock %}
