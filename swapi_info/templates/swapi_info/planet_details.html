@@ -14,7 +14,7 @@
                 <input type='hidden' name='item_url' value={{ item.url }}>
                 <input type="submit" class="btn red" value="Favorite this planet">
             </form>            
-            <table class="centered striped">
+            <table class="centered striped responsive-table">
                 <thead>
                     <tr>
                         <th>Diameter</th>
@@ -23,7 +23,7 @@
                         <th>Pop.</th>
                         <th>Climate</th>
                         <th>Terrain</th>
-                        <th>Surface Water</th>
+                        <th>Surface Water(%)</th>
 
                     </tr>
                 </thead>
@@ -35,7 +35,7 @@
                     <td>{{ item.population }}</td>
                     <td>{{ item.climate }}</td>
                     <td>{{ item.terrain }}</td>
-                    <td>{{ item.surface_water }}%</td>
+                    <td>{{ item.surface_water }}</td>
                   </tr>
                 </tbody>
             </table>
@@ -46,11 +46,11 @@
   <div class="row">
     <div class="card">
       <div class="card-content grey lighten-3">
-        <span class="card-title center-align"><b>Starships {{ item.name }} Piloted</b></span>
+        <span class="card-title center-align"><b>Characters from {{ item.name }}</b></span>
           <div class="collection center-align">
-            {% for starship in item_content.starships %}
+            {% for resident in item_content.residents %}
               <div class="col l4 m4 s6">
-                <a href={% url 'details' 'starships' starship %} class="collection-item" name={{ starship }} >{{ starship }}</a>              </div>
+                <a href={% url 'details' 'people' resident %} class="collection-item" name={{ resident }} >{{ resident }}</a>              </div>
             {% endfor %}
           </div>
       </div>
@@ -59,36 +59,15 @@
   <div class="row">
     <div class="card">
       <div class="card-content grey lighten-3">
-        <span class="card-title center-align"><b>Vehicles {{ item.name }} Piloted</b></span>
+        <span class="card-title center-align"><b>Film Appearances</b></span>
           <div class="collection center-align">
-            {% for vehicle in item_content.vehicles %}
+            {% for film in item_content.films %}
               <div class="col l4 m4 s6">
-                <a href={% url 'details' 'vehicles' vehicle %} class="collection-item"name={{ vehicle }} >{{ vehicle }}</a>              </div>
+                <a href={% url 'details' 'films' film %} class="collection-item"name={{ film }} >{{ film }}</a>              </div>
             {% endfor %}
           </div>
       </div>
     </div>
   </div>
 </div>
-    <p>{{ item.name }}</p>
-    <p>{{ item.diameter }}</p>
-    <p>{{ item.population }}</p>
-    <p>Residents</p>
-    {% for person in item_content.residents %}
-        <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
-      {% endfor %}
-    <p>Films</p>
-    {% for film in item_content.films %}
-        <li><a href={% url 'details' 'films' film %} name={{ film }} >{{ film }}</a></li>
-    {% endfor %}
-
-    <p>Favorite {{ item.name }}</p>
-    <form action="favorite" method="POST">
-        {% csrf_token %}
-        <input type='hidden' name='item_name' value="{{ item.name }}">
-        <input type='hidden' name='item_type' value={{ search_type }}>
-        <input type='hidden' name='item_url' value={{ item.url }}>
-        <input type="submit" value="Favorite">
-    </form>
-
 {% endblock %}

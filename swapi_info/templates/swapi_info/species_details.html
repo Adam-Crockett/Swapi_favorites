@@ -1,29 +1,83 @@
 {% extends 'swapi_info/base.html' %}
 
 {% block content %}
-    <p>{{ item.name }}</p>
-    <p>{{ item.classification }}</p>
-    <p>{{ item.designation }}</p>
-    <p>Homeworld</p>
-    {% for planet in item_content.homeworld %}
-        {% if planet != 'No Homeworld'%}
-            <li><a href={% url 'details' 'planets' planet %} name={{ planet }} >{{ planet }}</a></li>
-        {% else %}
-            {{ planet }}
-        {% endif %}
-    {% endfor %}
-    <p>People</p>
-    {% for person in item_content.people %}
-        <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
-    {% endfor %}
+<div class="container">
+  <div class="row">
+    <div class="col l12 m12 s12">
+      <div class="card teal lighten-3">
+        <div class="card-content center-align">
+            <span class="card-title center-align"><b><h3>{{ item.name }}</h3></b></span>
+            <form action="favorite" method="POST">
+                {% csrf_token %}
+                <input type='hidden' name='item_name' value="{{ item.name }}">
+                <input type='hidden' name='item_type' value={{ search_type }}>
+                <input type='hidden' name='item_url' value={{ item.url }}>
+                <input type="submit" class="btn red" value="Favorite this species">
+            </form>            
+            <table class="centered striped responsive-table">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Designation</th>
+                        <th>Avg. Height</th>
+                        <th>Avg. Lifespan</th>
+                        <th>Eye Colors</th>
+                        <th>Hair Colors</th>
+                        <th>Skin Colors</th>
+                        <th>Language</th>
+                        <th>Homeworld</th>
 
-    <p>Favorite {{ item.name }}</p>
-    <form action="favorite" method="POST">
-        {% csrf_token %}
-        <input type='hidden' name='item_name' value="{{ item.name }}">
-        <input type='hidden' name='item_type' value={{ search_type }}>
-        <input type='hidden' name='item_url' value={{ item.url }}>
-        <input type="submit" value="Favorite">
-    </form>
-    
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ item.classification }}</td>
+                    <td>{{ item.designation }} hours</td>
+                    <td>{{ item.average_height }} days</td>
+                    <td>{{ item.average_lifespan }}</td>
+                    <td>{{ item.eye_colors }}</td>
+                    <td>{{ item.hair_colors }}</td>
+                    <td>{{ item.skin_colors }}</td>
+                    <td>{{ item.language }}</td>
+                    {% for planet in item_content.homeworld %}
+                        {% if planet != 'No Homeworld'%}
+                            <td><a href={% url 'details' 'planets' planet %} name={{ planet }} >{{ planet }}</a></td>
+                        {% else %}
+                            <td>{{ planet }}</td>
+                        {% endif %}
+                    {% endfor %}
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content grey lighten-3">
+        <span class="card-title center-align"><b>Characters that are {{ item.name }}</b></span>
+          <div class="collection center-align">
+            {% for person in item_content.people %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'people' person %} class="collection-item" name={{ person }} >{{ person }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content grey lighten-3">
+        <span class="card-title center-align"><b>Film Appearances</b></span>
+          <div class="collection center-align">
+            {% for film in item_content.films %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'films' film %} class="collection-item"name={{ film }} >{{ film }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
