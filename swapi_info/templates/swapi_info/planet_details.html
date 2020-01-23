@@ -1,6 +1,75 @@
 {% extends 'swapi_info/base.html' %}
 
 {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col l12 m12 s12">
+      <div class="card teal lighten-3">
+        <div class="card-content center-align">
+            <span class="card-title center-align"><b><h3>{{ item.name }}</h3></b></span>
+            <form action="favorite" method="POST">
+                {% csrf_token %}
+                <input type='hidden' name='item_name' value="{{ item.name }}">
+                <input type='hidden' name='item_type' value={{ search_type }}>
+                <input type='hidden' name='item_url' value={{ item.url }}>
+                <input type="submit" class="btn red" value="Favorite this planet">
+            </form>            
+            <table class="centered striped">
+                <thead>
+                    <tr>
+                        <th>Diameter</th>
+                        <th>Rortation P.</th>
+                        <th>Orbital P.</th>
+                        <th>Pop.</th>
+                        <th>Climate</th>
+                        <th>Terrain</th>
+                        <th>Surface Water</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ item.diameter }}</td>
+                    <td>{{ item.rotation_period }} hours</td>
+                    <td>{{ item.orbital_period }} days</td>
+                    <td>{{ item.population }}</td>
+                    <td>{{ item.climate }}</td>
+                    <td>{{ item.terrain }}</td>
+                    <td>{{ item.surface_water }}%</td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content grey lighten-3">
+        <span class="card-title center-align"><b>Starships {{ item.name }} Piloted</b></span>
+          <div class="collection center-align">
+            {% for starship in item_content.starships %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'starships' starship %} class="collection-item" name={{ starship }} >{{ starship }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content grey lighten-3">
+        <span class="card-title center-align"><b>Vehicles {{ item.name }} Piloted</b></span>
+          <div class="collection center-align">
+            {% for vehicle in item_content.vehicles %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'vehicles' vehicle %} class="collection-item"name={{ vehicle }} >{{ vehicle }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
     <p>{{ item.name }}</p>
     <p>{{ item.diameter }}</p>
     <p>{{ item.population }}</p>
