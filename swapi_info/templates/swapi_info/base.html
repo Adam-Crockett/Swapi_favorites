@@ -19,31 +19,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
     <title>Star Wars Favorites</title>
-  <body>
+  <body class="blue-grey darken-2">
   <div class="container">
-  <nav>
+  <nav class="red darken-3">
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Star Wars Favorites</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a class="grey darken-3" href="{% url 'home' %}">Home</a></li>
-        <li><a class="grey darken-4" href="{% url 'search' %}">Search</a></li>
+      <div class="container">
+        <a class="brand-logo right white-text">Star Wars Favorites</a>
+      </div>
+      <ul id="nav-mobile" class="left">
+        <li><a class="waves-effect waves-light btn blue-grey lighten-3 black-text" href="{% url 'home' %}">Home</a></li>
+        <li><a class="waves-effect waves-light btn blue-grey lighten-3 black-text" href="{% url 'search' %}">Search</a></li>
       </ul>
     </div>
   </nav>
     {% block content %}
     {% endblock %}
-  <footer class="page-footer">
+  <footer class="page-footer red darken-3">
     <div class="container">
       <div class="row">
-        <div class="col l6 s12">
-          {% comment %} <h5 class="white-text"></h5>
-          <p class="grey-text text-lighten-4"></p> {% endcomment %}
-        </div>
-        <div class="col l0 offset-l0 s12">
+        <div class="col offset-l0 s12">
           <h5 class="white-text">Links</h5>
           <ul>
-            <li><a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/adam-crockett/">Linkedin</a></li>
-            <li><a class="grey-text text-lighten-3" href="https://github.com/Adam-Crockett">Github Repository</a></li>
+            <li><a class="grey-text text-lighten-4" href="https://www.linkedin.com/in/adam-crockett/">Linkedin</a></li>
+            <li><a class="grey-text text-lighten-4" href="https://github.com/Adam-Crockett">Github Repository</a></li>
           </ul>
         </div>
       </div>

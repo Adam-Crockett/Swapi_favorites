@@ -1,38 +1,116 @@
 {% extends 'swapi_info/base.html' %}
 
 {% block content %}
-    <p>{{ item.title }}</p>
-    <p>{{ item.opening_crawl }}</p>
-    <p>Characters</p>
-    {% for person in item_content.characters %}
-        <li><a href={% url 'details' 'people' person %} name={{ person }} >{{ person }}</a></li>
-      {% endfor %}
-    <p>{{ item_content.producer }}</p>
-    <p>{{ item.director }}</p>
-    <p>Starships</p>
-    {% for starship in item_content.starships %}
-        <li><a href={% url 'details' 'starships' starship %} name={{ starship }} >{{ starship }}</a></li>
-      {% endfor %}
-    <p>Planets</p>
-    {% for planet in item_content.planets %}
-        <li><a href={% url 'details' 'planets' planet %} name={{ planet }} >{{ planet }}</a></li>
-      {% endfor %}
-    <p>Species</p>
-    {% for species_name in item_content.species %}
-        <li><a href={% url 'details' 'species' species_name %} name={{ species_name }} >{{ species_name }}</a></li>
-      {% endfor %}
-    <p>Vehicles</p>
-    {% for vehicle in item_content.vehicles %}
-        <li><a href={% url 'details' 'vehicles' vehicle %} name={{ vehicle }} >{{ vehicle }}</a></li>
-      {% endfor %}
-
-    <p>Favorite {{ item.title }}</p>
-    <form action="favorite" method="POST">
-        {% csrf_token %}
-        <input type='hidden' name='item_name' value="{{ item.title }}">
-        <input type='hidden' name='item_type' value={{ search_type }}>
-        <input type='hidden' name='item_url' value={{ item.url }}>
-        <input type="submit" value="Favorite">
-    </form>
-
+<div class="container">
+  <div class="row">
+    <div class="col l12 m12 s12">
+      <div class="card teal lighten-3">
+        <div class="card-content center-align">
+            <span class="card-title center-align"><b><h3>{{ item.title }}</h3></b></span>
+            <form action="favorite" method="POST">
+                {% csrf_token %}
+                <input type='hidden' name='item_name' value="{{ item.title }}">
+                <input type='hidden' name='item_type' value={{ search_type }}>
+                <input type='hidden' name='item_url' value={{ item.url }}>
+                <input type="submit" class="btn red" value="Favorite this film">
+            </form>            
+            <table class="centered striped">
+                <thead>
+                    <tr>
+                        <th>Episode Number</th>
+                        <th>Director</th>
+                        <th>Producers</th>
+                        <th>Release Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ item.episode_id }}</td>
+                    <td>{{ item.director }}</td>
+                    <td>
+                      {% for producer in item_content.producer %}
+                        <p>{{ producer }}</p>
+                      {% endfor %}
+                    </td>
+                    <td>{{ item.release_date }}</td>
+                  </tr>
+                </tbody>
+            </table>
+            <div class="col s12 m12 l12 center-align">...</div>
+            <span class="card-title activator center-align waves-light"><b class="activator">Show Opening Crawl</b></span>
+        </div>
+        <div class="card-reveal center-align orange lighten-3">
+            <span class="card-title grey-text text-darken-4">Opening Crawl<i class="material-icons right">close</i></span>
+            <div class="divider"></div>
+            <p>{{ item.opening_crawl }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content orange lighten-3">
+        <span class="card-title center-align"><b>Characters</b></span>
+          <div class="collection center-align">
+            {% for person in item_content.characters %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'people' person %} class="collection-item" name={{ person }} >{{ person }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content grey lighten-3">
+        <span class="card-title center-align"><b>Starships</b></span>
+          <div class="collection center-align">
+            {% for starship in item_content.starships %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'starships' starship %} class="collection-item" name={{ starship }} >{{ starship }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content grey lighten-3">
+        <span class="card-title center-align"><b>Planets</b></span>
+          <div class="collection center-align">
+            {% for planet in item_content.planets %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'planets' planet %} class="collection-item" name={{ planet }} >{{ planet }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content grey lighten-3">
+        <span class="card-title center-align"><b>Species</b></span>
+          <div class="collection center-align">
+            {% for species_name in item_content.species %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'species' species_name %} class="collection-item" name={{ species_name }} >{{ species_name }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-content grey lighten-3">
+        <span class="card-title center-align"><b>Vehicles</b></span>
+          <div class="collection center-align">
+            {% for vehicle in item_content.vehicles %}
+              <div class="col l4 m4 s6">
+                <a href={% url 'details' 'vehicles' vehicle %} class="collection-item"name={{ vehicle }} >{{ vehicle }}</a>              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
