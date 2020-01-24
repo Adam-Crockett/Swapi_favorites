@@ -1,8 +1,15 @@
 {% extends 'swapi_info/base.html' %}
 
 {% block content %}
-<h2>You can't favorite this catagory for awhile.</h2>
-<p>Explore some of the other catagories for awhile.</p>
-
-<a href={{ request.META.HTTP_REFERER }} name='back'>Back</a>
+<div class="container">
+    <div class="row">
+        <div class="col center-align">
+            <h3>You can't favorite this catagory for awhile.</h3>
+            <h4>Explore some of the other catagories for awhile.</h4>
+        <div class="col s12 m12 l12 center-align">
+            <a href={{ request.META.HTTP_REFERER }} class="btn" name='back'>Back</a>
+        </div>
+        </div>
+    </row>
+</div>
 {% endblock %}
