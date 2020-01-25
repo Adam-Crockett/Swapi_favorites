@@ -22,17 +22,20 @@ class CacheController():
             for item in swapi_data['results']:
                 data_set['item_list'].append(item)
 
+            # Retrive all data if the json on SWAPI is paginated
             swapi_json_data = requests.get(swapi_data['next'])
+            # Transfer from Json string to Python objects.
             swapi_data = json.loads(
                 json.dumps(swapi_json_data.json()))
         else:
             for item in swapi_data['results']:
                 data_set['item_list'].append(item)
 
-        # if search_type == 'vehicles':
+        # If search_type == 'vehicles':
         data_set['item_list'] = self.handle_bad_name(
             search_type, data_set['item_list'])
 
+        # Create cache of the requested data on a one hour timer.
         caches['default'].add(search_type, data_set['item_list'])
 
     def get_cache(self, search_type):
