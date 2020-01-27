@@ -37,6 +37,9 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 405)
 
+    def test_HomePage_fail_to_query_top_five(self):
+        pass
+
     def test_search_GET_response(self):
         response = self.client.get(self.search_url)
 

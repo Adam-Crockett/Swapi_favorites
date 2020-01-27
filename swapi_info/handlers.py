@@ -14,22 +14,25 @@ class CacheController():
         :param search_type: The type of api search to request from SWAPI.
         """
         data_set = {'item_list': []}
-        swapi_json_data = requests.get(
-            'http://swapi.co/api/' + search_type + '/')
-        swapi_data = json.loads(json.dumps(swapi_json_data.json()))
+        try:
+            swapi_json_data = requests.get(
+                'http://swapi.co/api/' + search_type + '/')
+            swapi_data = json.loads(json.dumps(swapi_json_data.json()))
 
-        while swapi_data['next'] != None:
-            for item in swapi_data['results']:
-                data_set['item_list'].append(item)
+            while swapi_data['next'] != None:
+                for item in swapi_data['results']:
+                    data_set['item_list'].append(item)
 
-            # Retrive all data if the json on SWAPI is paginated
-            swapi_json_data = requests.get(swapi_data['next'])
-            # Transfer from Json string to Python objects.
-            swapi_data = json.loads(
-                json.dumps(swapi_json_data.json()))
-        else:
-            for item in swapi_data['results']:
-                data_set['item_list'].append(item)
+                # Retrive all data if the json on SWAPI is paginated.
+                swapi_json_data = requests.get(swapi_data['next'])
+                # Transfer from Json string to Python objects.
+                swapi_data = json.loads(
+                    json.dumps(swapi_json_data.json()))
+            else:
+                for item in swapi_data['results']:
+                    data_set['item_list'].append(item)
+        except:
+            return False
 
         # If search_type == 'vehicles':
         data_set['item_list'] = self.handle_bad_name(
@@ -95,15 +98,13 @@ class DetailGathering():
             for item in item_list:
                 if item['name'] == name:
                     return item
-                else:
-                    return False
         else:
             for item in item_list:
                 if item['title'] == name:
                     return item
-                else:
-                    return False
-        return HttpResponse(status=406)
+
+        # The requested item does not exist in the SWAPI database
+        return False
 
     def film_handler(self, film):
         """

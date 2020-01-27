@@ -93,9 +93,8 @@ class ResultList(ListView):
                        'item_list': []}
             cache_control = CacheController()
 
-            try:
-                context['item_list'] = cache_control.get_cache(search_type)
-            except:
+            context['item_list'] = cache_control.get_cache(search_type)
+            if context['item_list'] is False:
                 return HttpResponseServerError()
 
             return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
