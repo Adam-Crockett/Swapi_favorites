@@ -16,8 +16,10 @@ def search(request):
     **Template:**
     :template: 'swapi_info/search.html'
     """
-
-    return render(request, 'swapi_info/search.html')
+    if request.method == 'GET':
+        return render(request, 'swapi_info/search.html')
+    else:
+        return HttpResponseForbidden()
 
 
 class HomePage(ListView):
@@ -183,4 +185,4 @@ def add_favorite(request, *args, **kwargs):
         return TemplateResponse(request, 'swapi_info/favorite_added.html', status=201)
 
     else:
-        return HttpResponse(status=404)
+        return TemplateResponse(request, 'swapi_info/home.html', status=405)

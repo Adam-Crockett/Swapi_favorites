@@ -1,0 +1,14 @@
+{% extends 'swapi_info/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col center-align">
+            <h3>Sorry the requested page could not be found.</h3>
+            <br>
+            <p>Response: 404</p>
+            <p>Exception: {{ exception }}</p>
+        </div>
+    </row>
+</div>
+{% endblock %}
