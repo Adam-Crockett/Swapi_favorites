@@ -16,9 +16,7 @@ def search(request):
     **Template:**
     :template: 'swapi_info/search.html'
     """
-    # form = SearchForm()
 
-    # return render(request, 'swapi_info/search.html', {'form': form})
     return render(request, 'swapi_info/search.html')
 
 
@@ -84,7 +82,6 @@ class ResultList(ListView):
 
         :return: Templated response.
         """
-        # form = SearchForm(request.GET)
         search_type = request.GET['search_type']
         context = {'search_type': search_type,
                    'item_list': []}
