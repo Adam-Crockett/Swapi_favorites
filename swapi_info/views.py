@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import SearchForm
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, HttpResponseServerError
 from django.core.cache import caches
 from django.core import serializers
 from django.views.generic import ListView, DetailView
@@ -19,7 +19,7 @@ def search(request):
     if request.method == 'GET':
         return render(request, 'swapi_info/search.html')
     else:
-        return HttpResponseForbidden()
+        return TemplateResponse(request, 'swapi_info/405.html', status=405)
 
 
 class HomePage(ListView):
@@ -84,22 +84,23 @@ class ResultList(ListView):
 
         :return: Templated response.
         """
+        valid_search_types = ['films', 'people',
+                              'planets', 'starships', 'vehicles', 'species']
         search_type = request.GET['search_type']
-        context = {'search_type': search_type,
-                   'item_list': []}
-        cache_control = CacheController()
-        context['item_list'] = cache_control.get_cache(search_type)
 
-        return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
-        # if form.is_valid():
-        #     # process the data in form.cleaned_data as required
-        #     search_type = form.cleaned_data['search_type']
-        #     context = {'search_type': search_type,
-        #                'item_list': [], 'form': form}
-        #     cache_control = CacheController()
-        #     context['item_list'] = cache_control.get_cache(search_type)
+        if search_type in valid_search_types:
+            context = {'search_type': search_type,
+                       'item_list': []}
+            cache_control = CacheController()
 
-        #     return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
+            try:
+                context['item_list'] = cache_control.get_cache(search_type)
+            except:
+                return HttpResponseServerError()
+
+            return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
+        else:
+            return HttpResponseBadRequest()
 
 
 class ItemDetails(DetailView):
@@ -126,8 +127,9 @@ class ItemDetails(DetailView):
         """
         cache_control = CacheController()
         detail_gatherer = DetailGathering()
-        context = {'search_type': search_type, 'result_name': name}
-        item_list = cache_control.get_cache(search_type)
+
+        valid_search_types = ['films', 'people',
+                              'planets', 'starships', 'vehicles', 'species']
         type_handler = {
             'item': [detail_gatherer.item_handler],
             'films': [detail_gatherer.film_handler, 'swapi_info/film_details.html'],
@@ -137,10 +139,22 @@ class ItemDetails(DetailView):
             'starships': [detail_gatherer.starship_handler, 'swapi_info/starship_details.html'],
             'vehicles': [detail_gatherer.vehicle_handler, 'swapi_info/vehicle_details.html']}
 
+        if search_type not in valid_search_types:
+            return HttpResponseBadRequest()
+
+        context = {'search_type': search_type, 'result_name': name}
+        try:
+            item_list = cache_control.get_cache(search_type)
+        except:
+            return HttpResponseServerError()
         # Uses dict type_handler to make a method call to retrive object from detail_gatherer.
         item = type_handler['item'][0](
             item_list, search_type, name)
-        context['item'] = item
+
+        if item == False:
+            return HttpResponseBadRequest()
+        else:
+            context['item'] = item
 
         # Uses dict type_handler to make method call to detail_gatherer and retrieve context info.
         context['item_content'] = type_handler[search_type][0](item)
@@ -172,17 +186,23 @@ def add_favorite(request, *args, **kwargs):
         else:
             request.session[item_type] = item_type
             # Expireration of session to allow favorite selection again.
-            request.session.set_expiry(60)
+            request.session.set_expiry(300)
 
         # Request the object from database, if not in database a new entry is created.
-        obj, created = Favorites.objects.get_or_create(
-            name=item_name, item_type=item_type, swapi_url=swapi_url, defaults={'favorite_count': 1})
+        try:
+            obj, created = Favorites.objects.get_or_create(
+                name=item_name, item_type=item_type, swapi_url=swapi_url, defaults={'favorite_count': 1})
+        except:
+            return HttpResponseServerError()
 
-        if not created:
-            obj.favorite_count += 1
-            obj.save()
+        try:
+            if not created:
+                obj.favorite_count += 1
+                obj.save()
+        except:
+            return HttpResponseServerError()
 
         return TemplateResponse(request, 'swapi_info/favorite_added.html', status=201)
 
     else:
-        return TemplateResponse(request, 'swapi_info/home.html', status=405)
+        return TemplateResponse(request, 'swapi_info/405.html', status=405)

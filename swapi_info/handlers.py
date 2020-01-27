@@ -95,10 +95,14 @@ class DetailGathering():
             for item in item_list:
                 if item['name'] == name:
                     return item
+                else:
+                    return False
         else:
             for item in item_list:
                 if item['title'] == name:
                     return item
+                else:
+                    return False
         return HttpResponse(status=406)
 
     def film_handler(self, film):
