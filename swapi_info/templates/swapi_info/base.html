@@ -19,22 +19,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
     <title>Star Wars Favorites</title>
-  <body class="blue-grey darken-2">
+  <body class="white">
   <div class="container">
-  <nav class="red darken-3">
+  <nav class="red lighten-2">
     <div class="nav-wrapper">
       <div class="container hide-on-small-and-down">
         <a class="brand-logo right white-text">Star Wars Favorites</a>
       </div>
       <ul id="nav-mobile" class="left">
-        <li><a class="waves-effect waves-light btn blue-grey lighten-3 black-text" href="{% url 'home' %}">Home</a></li>
-        <li><a class="waves-effect waves-light btn blue-grey lighten-3 black-text" href="{% url 'search' %}">Search</a></li>
+        <li><a class="waves-effect waves-light btn teal lighten-4 black-text" href="{% url 'home' %}">Home</a></li>
+        <li><a class="waves-effect waves-light btn teal lighten-4 black-text" href="{% url 'search' %}">Search</a></li>
       </ul>
     </div>
   </nav>
     {% block content %}
     {% endblock %}
-  <footer class="page-footer red darken-3">
+  <footer class="page-footer red lighten-2">
     <div class="container">
       <div class="row">
         <div class="col offset-l0 s12">

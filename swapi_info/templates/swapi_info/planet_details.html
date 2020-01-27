@@ -4,7 +4,7 @@
 <div class="container">
   <div class="row">
     <div class="col l12 m12 s12">
-      <div class="card teal lighten-3">
+      <div class="card teal lighten-3 hoverable">
         <div class="card-content center-align">
             <span class="card-title center-align"><b><h3>{{ item.name }}</h3></b></span>
             <form action="favorite" method="POST">
@@ -45,7 +45,7 @@
   </div>
   <div class="row">
     <div class="card">
-      <div class="card-content grey lighten-3">
+      <div class="card-content orange lighten-4 hoverable">
         <span class="card-title center-align"><b>Characters from {{ item.name }}</b></span>
           <div class="collection center-align">
             {% for resident in item_content.residents %}
@@ -58,7 +58,7 @@
   </div>
   <div class="row">
     <div class="card">
-      <div class="card-content grey lighten-3">
+      <div class="card-content teal lighten-4 hoverable">
         <span class="card-title center-align"><b>Film Appearances</b></span>
           <div class="collection center-align">
             {% for film in item_content.films %}

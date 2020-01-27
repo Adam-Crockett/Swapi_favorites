@@ -4,7 +4,7 @@
 <div class="container">
   <div class="row">
     <div class="col l12 m12 s12">
-      <div class="card teal lighten-3">
+      <div class="card teal lighten-3 hoverable">
         <div class="card-content center-align">
             <span class="card-title center-align"><b><h3>{{ item.title }}</h3></b></span>
             <form action="favorite" method="POST">
@@ -39,7 +39,7 @@
             <div class="col s12 m12 l12 center-align">...</div>
             <span class="card-title activator center-align waves-light"><b class="activator">Show Opening Crawl</b></span>
         </div>
-        <div class="card-reveal center-align orange lighten-3">
+        <div class="card-reveal center-align green lighten-3">
             <span class="card-title grey-text text-darken-4">Opening Crawl<i class="material-icons right">close</i></span>
             <div class="divider"></div>
             <p>{{ item.opening_crawl }}</p>
@@ -49,7 +49,7 @@
   </div>
   <div class="row">
     <div class="card">
-      <div class="card-content orange lighten-3">
+      <div class="card-content orange lighten-4 hoverable">
         <span class="card-title center-align"><b>Characters</b></span>
           <div class="collection center-align">
             {% for person in item_content.characters %}
@@ -62,7 +62,7 @@
   </div>
   <div class="row">
     <div class="card">
-      <div class="card-content grey lighten-3">
+      <div class="card-content teal lighten-4 hoverable">
         <span class="card-title center-align"><b>Starships</b></span>
           <div class="collection center-align">
             {% for starship in item_content.starships %}
@@ -75,7 +75,7 @@
   </div>
   <div class="row">
     <div class="card">
-      <div class="card-content grey lighten-3">
+      <div class="card-content orange lighten-4 hoverable">
         <span class="card-title center-align"><b>Planets</b></span>
           <div class="collection center-align">
             {% for planet in item_content.planets %}
@@ -88,7 +88,7 @@
   </div>
   <div class="row">
     <div class="card">
-      <div class="card-content grey lighten-3">
+      <div class="card-content teal lighten-4 hoverable">
         <span class="card-title center-align"><b>Species</b></span>
           <div class="collection center-align">
             {% for species_name in item_content.species %}
@@ -101,7 +101,7 @@
   </div>
   <div class="row">
     <div class="card">
-      <div class="card-content grey lighten-3">
+      <div class="card-content orange lighten-4 hoverable">
         <span class="card-title center-align"><b>Vehicles</b></span>
           <div class="collection center-align">
             {% for vehicle in item_content.vehicles %}
