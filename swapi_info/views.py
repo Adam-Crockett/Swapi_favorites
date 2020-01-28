@@ -174,7 +174,6 @@ def add_favorite(request, *args, **kwargs):
 
     :param item_name: The object's name.
     :param item_type: The object's type.
-    :param item_url: The object's SWAPI url.
 
     **Template:**
 
