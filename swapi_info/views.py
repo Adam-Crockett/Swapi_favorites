@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from .forms import SearchForm
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, HttpResponseServerError
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.cache import caches
 from django.core import serializers
 from django.views.generic import ListView, DetailView
 from django.template.response import TemplateResponse
 from swapi_info.handlers import CacheController, DetailGathering
 from swapi_info.models import Favorites
+from django.http import Http404
+from django.core.exceptions import PermissionDenied, SuspiciousOperation
 
 
 def search(request):
@@ -95,11 +97,13 @@ class ResultList(ListView):
 
             context['item_list'] = cache_control.get_cache(search_type)
             if context['item_list'] is False:
-                return HttpResponseServerError()
+                # return deserver_error(template_name='swapi_info/500.html')
+                return TemplateResponse(request, 'swapi_info/500.html', status=500)
 
             return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
         else:
-            return HttpResponseBadRequest()
+            # return HttpResponseBadRequest(template_name='swapi_info/400.html')
+            raise SuspiciousOperation
 
 
 class ItemDetails(DetailView):
@@ -139,13 +143,13 @@ class ItemDetails(DetailView):
             'vehicles': [detail_gatherer.vehicle_handler, 'swapi_info/vehicle_details.html']}
 
         if search_type not in valid_search_types:
-            return HttpResponseBadRequest()
+            raise SuspiciousOperation
 
         context = {'search_type': search_type, 'result_name': name}
         try:
             item_list = cache_control.get_cache(search_type)
         except:
-            return HttpResponseServerError()
+            return TemplateResponse(request, 'swapi_info/500.html', status=500)
 
         # Uses dict type_handler to make a method call to retrive object from detail_gatherer.
         item = type_handler['item'][0](
@@ -153,7 +157,7 @@ class ItemDetails(DetailView):
 
         # False: The requested item name is not in the SWAPI database.
         if item == False:
-            return HttpResponseBadRequest()
+            raise SuspiciousOperation
         else:
             context['item'] = item
 
@@ -177,10 +181,34 @@ def add_favorite(request, *args, **kwargs):
     :template: 'swapi_info/favorite_not_added.html'
     :template: 'swapi_info/favorite_added.html'
     """
+    valid_item_types = ['films', 'people',
+                        'planets', 'starships', 'vehicles', 'species']
+    cache_control = CacheController()
+    detail_gatherer = DetailGathering()
+
     if request.method == 'POST':
         item_name = request.POST['item_name']
         item_type = request.POST['item_type']
-        swapi_url = request.POST['item_url']
+
+        # Make sure the Type search is valid.
+        if item_type not in valid_item_types:
+            raise SuspiciousOperation
+
+        # Retreive Type list from cache.
+        try:
+            item_list = cache_control.get_cache(item_type)
+        except:
+            return TemplateResponse(request, 'swapi_info/500.html', status=500)
+
+        # Retrieve the specific item from the list.
+        item = detail_gatherer.item_handler(item_list, item_type, item_name)
+
+        # False: The requested item name is not in the SWAPI database.
+        if item == False:
+            raise SuspiciousOperation
+        else:
+            # Get item swapi url
+            swapi_url = item['url']
 
         if item_type in request.session:
             return TemplateResponse(request, 'swapi_info/favorite_not_added.html', status=403)
@@ -194,14 +222,15 @@ def add_favorite(request, *args, **kwargs):
             obj, created = Favorites.objects.get_or_create(
                 name=item_name, item_type=item_type, swapi_url=swapi_url, defaults={'favorite_count': 1})
         except:
-            return HttpResponseServerError()
+            return TemplateResponse(request, 'swapi_info/500.html', status=500)
 
+        # If it is not a new item the obj in the database has it's favorite count incremented.
         try:
             if not created:
                 obj.favorite_count += 1
                 obj.save()
         except:
-            return HttpResponseServerError()
+            return TemplateResponse(request, 'swapi_info/500.html', status=500)
 
         return TemplateResponse(request, 'swapi_info/favorite_added.html', status=201)
 

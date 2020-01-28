@@ -17,6 +17,7 @@ class TestViews(TestCase):
 
         self.home_url = reverse('home')
         self.search_url = reverse('search')
+        self.results_url = reverse('results')
         # self.details_url = reverse('details', args=['test_type', 'test_name'])
         # self.favorite_url = reverse(
         #     'favorite', args=['test_type', 'test_name'])
@@ -52,16 +53,29 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 405)
 
     def test_results_GET_response(self):
-        pass
+        response = self.client.get(self.results_url, {'search_type': 'films'})
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'swapi_info/results.html')
 
     def test_results_POST_response(self):
-        pass
+        response = self.client.post(
+            self.results_url, {'search_type': 'planets'})
+
+        self.assertEquals(response.status_code, 405)
 
     def test_results_DELETE_response(self):
-        pass
+        response = self.client.delete(
+            self.results_url, {'search_type': 'starships'})
+
+        self.assertEquals(response.status_code, 405)
 
     def test_results_invalid_search_response(self):
-        pass
+        response = self.client.get(
+            self.results_url, {'search_type': 'bad_test_type'})
+
+        self.assertEquals(response.status_code, 400)
+        self.assertTemplateUsed(response, 'swapi_info/400.html')
 
     def test_results_cache_recall_failure_response(self):
         pass
