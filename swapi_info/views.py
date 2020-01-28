@@ -146,10 +146,12 @@ class ItemDetails(DetailView):
             item_list = cache_control.get_cache(search_type)
         except:
             return HttpResponseServerError()
+
         # Uses dict type_handler to make a method call to retrive object from detail_gatherer.
         item = type_handler['item'][0](
             item_list, search_type, name)
 
+        # False: The requested item name is not in the SWAPI database.
         if item == False:
             return HttpResponseBadRequest()
         else:

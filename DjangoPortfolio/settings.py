@@ -85,7 +85,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'TIMEOUT': 3600,
+        'TIMEOUT': 300,
         'LOCATION': 'swapi_data',
     }
 }

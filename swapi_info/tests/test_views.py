@@ -50,3 +50,36 @@ class TestViews(TestCase):
         response = self.client.post(self.search_url)
 
         self.assertEquals(response.status_code, 405)
+
+    def test_results_GET_response(self):
+        pass
+
+    def test_results_POST_response(self):
+        pass
+
+    def test_results_DELETE_response(self):
+        pass
+
+    def test_results_invalid_search_response(self):
+        pass
+
+    def test_results_cache_recall_failure_response(self):
+        pass
+
+    def test_details_GET_response(self):
+        pass
+
+    def test_details_POST_response(self):
+        pass
+
+    def test_details_DELETE_response(self):
+        pass
+
+    def test_details_invalid_search_type_response(self):
+        pass
+
+    def test_detials_invalid_search_name_response(self):
+        pass
+
+    def test_details_cache_recall_failure_response(self):
+        pass
