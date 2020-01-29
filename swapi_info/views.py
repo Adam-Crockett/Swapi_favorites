@@ -162,7 +162,10 @@ class ItemDetails(DetailView):
             context['item'] = item
 
         # Uses dict type_handler to make method call to detail_gatherer and retrieve context info.
-        context['item_content'] = type_handler[search_type][0](item)
+        try:
+            context['item_content'] = type_handler[search_type][0](item)
+        except:
+            return TemplateResponse(request, 'swapi_info/500.html', status=500)
 
         return TemplateResponse(request, type_handler[search_type][1], context, status=200)
 

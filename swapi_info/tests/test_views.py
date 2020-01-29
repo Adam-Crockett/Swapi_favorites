@@ -18,8 +18,6 @@ class TestViews(TestCase):
         self.home_url = reverse('home')
         self.search_url = reverse('search')
         self.results_url = reverse('results')
-        # self.favorite_url = reverse(
-        #     'favorite', args=['test_type', 'test_name'])
 
     def test_HomePage_GET_response(self):
         response = self.client.get(self.home_url)
@@ -36,9 +34,6 @@ class TestViews(TestCase):
         response = self.client.delete(self.home_url)
 
         self.assertEquals(response.status_code, 405)
-
-    def test_HomePage_fail_to_query_top_five(self):
-        pass
 
     def test_search_GET_response(self):
         response = self.client.get(self.search_url)
@@ -75,9 +70,6 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 400)
 
-    def test_results_cache_recall_failure_response(self):
-        pass
-
     def test_details_GET_response(self):
         details_url = reverse('details', args=['vehicles', 'AT-AT'])
         response = self.client.get(details_url)
@@ -108,9 +100,6 @@ class TestViews(TestCase):
         response = self.client.get(details_url)
 
         self.assertEquals(response.status_code, 400)
-
-    def test_details_cache_recall_failure_response(self):
-        pass
 
     def test_favorite_valid_post_response(self):
         favorite_url = reverse('favorite', args=['planets', 'Naboo'])

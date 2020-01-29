@@ -34,7 +34,7 @@ class CacheController():
         except:
             return False
 
-        # If search_type == 'vehicles':
+        # Send to bad name handler to replace "/" with "-" in names.
         data_set['item_list'] = self.handle_bad_name(
             search_type, data_set['item_list'])
 
