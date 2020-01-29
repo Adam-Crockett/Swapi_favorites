@@ -1,4 +1,5 @@
 # Swapi_favorites
+
 Django Portfolio Project
 
 This project is a site users can visit to see the top favorites of Films, Characters, Starships, etc from the Star Wars Films.
@@ -10,8 +11,10 @@ The information for the movies is collected from the SWAPI API at https://swapi.
 time for easy of use by the user. Their database currently holds information on episodes 1 through 7.
 
 # Learning Highlights from this Project
+
 This project allowed me to dip into many of the different aspects of django and compare to experience and knowledge of other
-frameworks. I was already familiar with Python and this project allowed me to use it in a web framework. 
+frameworks. I was already familiar with Python and this project allowed me to use it in a web framework.
+
 - Understanding of Django's MTV pattern compared to the MVC pattern.
 - Use of Class based Views.
 - Practice in using 3rd party API calls.
@@ -19,3 +22,4 @@ frameworks. I was already familiar with Python and this project allowed me to us
 - Creating tests for each aspect of the MTV.
 - Understanding of how Django interacts with it's database through the Model.
 - Usage of Session data.
+- Template use with CSS/JS Framework.(Materialize)
