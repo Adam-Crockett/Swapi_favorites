@@ -5,7 +5,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 
 class CacheController():
-    """Controls the caching of information from the SWAPI API."""
+    """Controls the caching of information from the SWAPI API. Only the get_cache is accessed externally."""
+
+    def __init__(self):
+        """
+        Create list of valid search types for cache.
+        """
+        self.valid_search_types = ['films', 'people',
+                                   'planets', 'starships', 'vehicles', 'species']
 
     def set_cache(self, search_type):
         """
@@ -13,6 +20,7 @@ class CacheController():
 
         :param search_type: The type of api search to request from SWAPI.
         """
+
         data_set = {'item_list': []}
         try:
             swapi_json_data = requests.get(
@@ -49,6 +57,9 @@ class CacheController():
         :param search_type: The requested search type.
         :return: The cached list of objects based on serach type.
         """
+        if search_type not in self.valid_search_types:
+            return False
+
         if search_type in caches['default']:
             return caches['default'].get(search_type)
         else:
@@ -160,25 +171,28 @@ class DetailGathering():
         starships = []
         vehicles = []
 
-        for planet in self.cache_control.get_cache('planets'):
-            if planet['url'] in person['homeworld']:
-                homeworld.append(planet['name'])
+        try:
+            for planet in self.cache_control.get_cache('planets'):
+                if planet['url'] in person['homeworld']:
+                    homeworld.append(planet['name'])
 
-        for film in self.cache_control.get_cache('films'):
-            if film['url'] in person['films']:
-                films.append(film['title'])
+            for film in self.cache_control.get_cache('films'):
+                if film['url'] in person['films']:
+                    films.append(film['title'])
 
-        for species_name in self.cache_control.get_cache('species'):
-            if species_name['url'] in person['species']:
-                species.append(species_name['name'])
+            for species_name in self.cache_control.get_cache('species'):
+                if species_name['url'] in person['species']:
+                    species.append(species_name['name'])
 
-        for starship in self.cache_control.get_cache('starships'):
-            if starship['url'] in person['starships']:
-                starships.append(starship['name'])
+            for starship in self.cache_control.get_cache('starships'):
+                if starship['url'] in person['starships']:
+                    starships.append(starship['name'])
 
-        for vehicle in self.cache_control.get_cache('vehicles'):
-            if vehicle['url'] in person['vehicles']:
-                vehicles.append(vehicle['name'])
+            for vehicle in self.cache_control.get_cache('vehicles'):
+                if vehicle['url'] in person['vehicles']:
+                    vehicles.append(vehicle['name'])
+        except:
+            return False
 
         context = {'item': person, 'films': films, 'homeworld': homeworld,
                    'species': species, 'starships': starships, 'vehicles': vehicles}
@@ -197,22 +211,25 @@ class DetailGathering():
         people = []
         films = []
 
-        # Add None error handeling
-        for planet in self.cache_control.get_cache('planets'):
-            try:
-                if planet['url'] in species['homeworld']:
-                    homeworld.append(planet['name'])
-            except TypeError as e:
-                homeworld.append('No Homeworld')
-                break
+        try:
+            # Add None error handeling for no Homeworld
+            for planet in self.cache_control.get_cache('planets'):
+                try:
+                    if planet['url'] in species['homeworld']:
+                        homeworld.append(planet['name'])
+                except:
+                    homeworld.append('No Homeworld')
+                    break
 
-        for person in self.cache_control.get_cache('people'):
-            if person['url'] in species['people']:
-                people.append(person['name'])
+            for person in self.cache_control.get_cache('people'):
+                if person['url'] in species['people']:
+                    people.append(person['name'])
 
-        for film in self.cache_control.get_cache('films'):
-            if film['url'] in species['films']:
-                films.append(film['title'])
+            for film in self.cache_control.get_cache('films'):
+                if film['url'] in species['films']:
+                    films.append(film['title'])
+        except:
+            return False
 
         context = {'item': species, 'homeworld': homeworld,
                    'people': people, 'films': films}
@@ -230,13 +247,16 @@ class DetailGathering():
         residents = []
         films = []
 
-        for person in self.cache_control.get_cache('people'):
-            if person['url'] in planet['residents']:
-                residents.append(person['name'])
+        try:
+            for person in self.cache_control.get_cache('people'):
+                if person['url'] in planet['residents']:
+                    residents.append(person['name'])
 
-        for film in self.cache_control.get_cache('films'):
-            if film['url'] in planet['films']:
-                films.append(film['title'])
+            for film in self.cache_control.get_cache('films'):
+                if film['url'] in planet['films']:
+                    films.append(film['title'])
+        except:
+            return False
 
         context = {'item': planet,
                    'residents': residents, 'films': films}
@@ -254,13 +274,16 @@ class DetailGathering():
         pilots = []
         films = []
 
-        for person in self.cache_control.get_cache('people'):
-            if person['url'] in starship['pilots']:
-                pilots.append(person['name'])
+        try:
+            for person in self.cache_control.get_cache('people'):
+                if person['url'] in starship['pilots']:
+                    pilots.append(person['name'])
 
-        for film in self.cache_control.get_cache('films'):
-            if film['url'] in starship['films']:
-                films.append(film['title'])
+            for film in self.cache_control.get_cache('films'):
+                if film['url'] in starship['films']:
+                    films.append(film['title'])
+        except:
+            return False
 
         context = {'item': starship, 'pilots': pilots, 'films': films}
 
@@ -277,13 +300,16 @@ class DetailGathering():
         pilots = []
         films = []
 
-        for person in self.cache_control.get_cache('people'):
-            if person['url'] in vehicle['pilots']:
-                pilots.append(person['name'])
+        try:
+            for person in self.cache_control.get_cache('people'):
+                if person['url'] in vehicle['pilots']:
+                    pilots.append(person['name'])
 
-        for film in self.cache_control.get_cache('films'):
-            if film['url'] in vehicle['films']:
-                films.append(film['title'])
+            for film in self.cache_control.get_cache('films'):
+                if film['url'] in vehicle['films']:
+                    films.append(film['title'])
+        except:
+            return False
 
         context = {'item': vehicle, 'pilots': pilots, 'films': films}
 

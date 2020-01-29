@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 import json
-from swapi_info import handlers
+from swapi_info.handlers import CacheController, DetailGathering
 
 
 class TestHandlers(TestCase):
@@ -13,27 +13,37 @@ class TestHandlers(TestCase):
         """
         Create starting paramaters for handler tests.
         """
-
-    def test_set_cache_successful(self):
-        pass
-
-    def test_set_cahce_failure(self):
-        pass
+        self.cache_handler = CacheController()
+        self.detail_gathering = DetailGathering()
+        self.planet_list = self.cache_handler.get_cache('planets')
 
     def test_get_cache_type_does_not_exist(self):
-        pass
+        invalid_search = self.cache_handler.get_cache('Not valid search type')
+
+        self.assertFalse(invalid_search, False)
 
     def test_get_cahce_type_type_does_exist(self):
-        pass
+        valid_search = self.cache_handler.get_cache('films')
 
-    def test_handle_bad_name_change(self):
-        pass
+        self.assertIsNot(valid_search, False)
 
     def test_item_handler_successful(self):
-        pass
+        valid_item = self.detail_gathering.item_handler(
+            self.planet_list, 'planets', 'Naboo')
 
-    def test_item_handler_failure(self):
-        pass
+        self.assertIsNot(valid_item, False)
+
+    def test_item_handler_bad_name_faliure(self):
+        valid_item = self.detail_gathering.item_handler(
+            self.planet_list, 'planets', 'Not a planet Name')
+
+        self.assertEquals(valid_item, False)
+
+    def test_item_handler_bad_type_faliure(self):
+        valid_item = self.detail_gathering.item_handler(
+            self.planet_list, 'bad search type', 'Naboo')
+
+        self.assertEquals(valid_item, False)
 
     def test_film_handler_success(self):
         pass
@@ -48,7 +58,11 @@ class TestHandlers(TestCase):
         pass
 
     def test_planet_handler_success(self):
-        pass
+        planets_list = self.cache_handler.get_cache('planets')
+        coruscant_test = self.detail_gathering.item_handler(
+            planets_list, 'planets', 'coruscant')
+
+        self.assertIsNot(coruscant_test, False)
 
     def test_vehicle_handler_success(self):
         pass
