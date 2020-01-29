@@ -14,7 +14,7 @@ class CacheController():
         self.valid_search_types = ['films', 'people',
                                    'planets', 'starships', 'vehicles', 'species']
 
-    def set_cache(self, search_type):
+    def _set_cache(self, search_type):
         """
         Converts from json data retrieved from SWAPI into Python objects and stores in cache.
 
@@ -63,7 +63,7 @@ class CacheController():
         if search_type in caches['default']:
             return caches['default'].get(search_type)
         else:
-            self.set_cache(search_type)
+            self._set_cache(search_type)
             return caches['default'].get(search_type)
 
     def handle_bad_name(self, search_type, item_list):
