@@ -156,7 +156,7 @@ class ItemDetails(DetailView):
             item_list, search_type, name)
 
         # False: The requested item name is not in the SWAPI database.
-        if item == False:
+        if item is False:
             raise SuspiciousOperation
         else:
             context['item'] = item

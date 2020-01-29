@@ -105,6 +105,12 @@ class DetailGathering():
         :return item: The desired object.
         :return 406: Return a 406 if the object does not exist in cache list.
         """
+        valid_search_types = ['films', 'people',
+                              'planets', 'starships', 'vehicles', 'species']
+
+        if search_type not in valid_search_types:
+            return False
+
         if search_type != 'films':
             for item in item_list:
                 if item['name'] == name:
@@ -133,25 +139,28 @@ class DetailGathering():
 
         producer = film['producer'].split(',')
 
-        for person in self.cache_control.get_cache('people'):
-            if person['url'] in film['characters']:
-                characters.append(person['name'])
+        try:
+            for person in self.cache_control.get_cache('people'):
+                if person['url'] in film['characters']:
+                    characters.append(person['name'])
 
-        for species_name in self.cache_control.get_cache('species'):
-            if species_name['url'] in film['species']:
-                species.append(species_name['name'])
+            for species_name in self.cache_control.get_cache('species'):
+                if species_name['url'] in film['species']:
+                    species.append(species_name['name'])
 
-        for planet in self.cache_control.get_cache('planets'):
-            if planet['url'] in film['planets']:
-                planets.append(planet['name'])
+            for planet in self.cache_control.get_cache('planets'):
+                if planet['url'] in film['planets']:
+                    planets.append(planet['name'])
 
-        for starship in self.cache_control.get_cache('starships'):
-            if starship['url'] in film['starships']:
-                starships.append(starship['name'])
+            for starship in self.cache_control.get_cache('starships'):
+                if starship['url'] in film['starships']:
+                    starships.append(starship['name'])
 
-        for vehicle in self.cache_control.get_cache('vehicles'):
-            if vehicle['url'] in film['vehicles']:
-                vehicles.append(vehicle['name'])
+            for vehicle in self.cache_control.get_cache('vehicles'):
+                if vehicle['url'] in film['vehicles']:
+                    vehicles.append(vehicle['name'])
+        except:
+            return False
 
         context = {'item': film, 'producer': producer, 'characters': characters, 'planets': planets,
                    'species': species, 'starships': starships, 'vehicles': vehicles}

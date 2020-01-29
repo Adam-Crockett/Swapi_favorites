@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c=g#q!6b-(t#k_uqk-p!gyp-s+(34o-^rt1cl@=q=gxu4uc38r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 
@@ -85,7 +85,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'TIMEOUT': 300,
+        'TIMEOUT': 600,
         'LOCATION': 'swapi_data',
     }
 }
