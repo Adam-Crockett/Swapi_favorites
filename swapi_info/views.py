@@ -102,8 +102,7 @@ class ResultList(ListView):
 
             return TemplateResponse(request, 'swapi_info/results.html', context, status=200)
         else:
-            # return HttpResponseBadRequest(template_name='swapi_info/400.html')
-            raise SuspiciousOperation
+            return TemplateResponse(request, 'swapi_info/404.html', status=404)
 
 
 class ItemDetails(DetailView):
@@ -143,7 +142,7 @@ class ItemDetails(DetailView):
             'vehicles': [detail_gatherer.vehicle_handler, 'swapi_info/vehicle_details.html']}
 
         if search_type not in valid_search_types:
-            raise SuspiciousOperation
+            return TemplateResponse(request, 'swapi_info/404.html', status=404)
 
         context = {'search_type': search_type, 'result_name': name}
         try:
@@ -157,7 +156,7 @@ class ItemDetails(DetailView):
 
         # False: The requested item name is not in the SWAPI database.
         if item is False:
-            raise SuspiciousOperation
+            return TemplateResponse(request, 'swapi_info/404.html', status=404)
         else:
             context['item'] = item
 
@@ -194,7 +193,7 @@ def add_favorite(request, *args, **kwargs):
 
         # Make sure the Type search is valid.
         if item_type not in valid_item_types:
-            raise SuspiciousOperation
+            return TemplateResponse(request, 'swapi_info/404.html', status=404)
 
         # Retreive Type list from cache.
         try:
@@ -207,7 +206,7 @@ def add_favorite(request, *args, **kwargs):
 
         # False: The requested item name is not in the SWAPI database.
         if item == False:
-            raise SuspiciousOperation
+            return TemplateResponse(request, 'swapi_info/404.html', status=404)
         else:
             # Get item swapi url
             swapi_url = item['url']
