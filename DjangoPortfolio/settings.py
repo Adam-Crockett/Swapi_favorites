@@ -23,12 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-<<<<<<< HEAD
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-=======
-SECRET_KEY = os.environ['SECRET_KEY']
->>>>>>> refs/remotes/origin/master
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -100,13 +96,10 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-<<<<<<< HEAD
-}
+
 DATABASES['default'] = dj_database_url.config(
     conn_max_age=600, ssl_require=True)
 
-=======
->>>>>>> refs/remotes/origin/master
 
 CACHES = {
     'default': {
