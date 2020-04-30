@@ -21,3 +21,8 @@ frameworks. I was already familiar with Python and this project allowed me to us
 - Understanding of how Django interacts with it's database through the Model.
 - Usage of Session data.
 - Template use with CSS/JS Framework.(Materialize)
+
+# Bug List
+-(Resolved) SWAPI had a domain name change. Broke ability to search for any items in DB.
+- SWAPI domain change has made some favoriting not work in all catagories. ex/ Favoriting Humans works, but not Droids.
+
